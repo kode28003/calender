@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:calender/page/home.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:calender/page/top.dart';
 
 
 void main() {
@@ -22,7 +23,9 @@ class MyApp extends ConsumerWidget {
     onGenerateRoute: (routeSettings) {
     switch (routeSettings.name) {
     case HomePage.route:
-    return MaterialPageRoute(builder: (_) => const HomePage());
+      return MaterialPageRoute(builder: (_) => const HomePage());
+    case TopPage.route:
+      return MaterialPageRoute(builder: (_) => const TopPage());
     }
     });
   }

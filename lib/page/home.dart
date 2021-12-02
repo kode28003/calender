@@ -141,7 +141,6 @@ _DataSource _getDataSource() {
   return _DataSource(appointments);
 }
 
-
 class _DataSource extends CalendarDataSource {
   _DataSource(List<Appointment> source) {
     appointments = source;
