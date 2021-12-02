@@ -7,7 +7,6 @@ import 'package:flutter/widgets.dart';
 
 CalendarDataSource? _dataSource;
 Appointment? app;
-dynamic context1;
 int number=1;
 final explanation=[
   '2030年までに、現在１日1.25ドル未満で生活する人々と定義されている極度の貧困をあらゆる場所で終わらせる。',
@@ -26,27 +25,65 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context,WidgetRef ref){
     _dataSource = _getDataSource();
-    context1=context;
     final random=ref.watch(randomProvider);
-    number=random.nextInt(6);
+    ref.watch(countProvider);
+    number=random.nextInt(6);//0~5までのrandomをもとめる
         
     return Scaffold(
       appBar: AppBar(
-        title:  const Text('SDGs App')
+        title:  const Text('SDGs App'),
       ),
-      body: ListView(
-          children: [
-            SizedBox(
-              height: 70,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: _children,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+              children:[
+                SizedBox(
+                height: 65,
+              child: GestureDetector(
+                onTap: () {
+                  showDialog(
+                    barrierColor: background(number)!.withOpacity(0.3),
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (_) {
+                      return AlertDialog(
+                        title:  Text("目標 "+(number+1).toString()+" の具体例"),
+                        content: Text(explanation[number]),
+                        actions: [
+                          FlatButton(
+                            child: const Text("Cancel"),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                child:Image.asset('image/'+(number+1).toString()+'.jpg',width: 150,height: 100,),
               ),
             ),
-            SfCalendar(
+                Text('                                           '),
+                FloatingActionButton(
+                  backgroundColor: Colors.white,
+                  onPressed: () {
+                    ref.read(countProvider.state).state+=1;
+                  },
+                  child: const Icon(
+                      Icons.refresh,
+                      size: 36,
+                      color: Colors.blue,
+                      ),
+                ),
+               ],
+              ),
+            SizedBox(
+              height: 440,
+              child:SfCalendar(
               view: CalendarView.month,
               dataSource: _dataSource,
-              monthViewSettings: const MonthViewSettings(showAgenda: true,appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
+              headerHeight:  29,
+              monthViewSettings: const MonthViewSettings(showAgenda: true,),
               scheduleViewSettings: const ScheduleViewSettings(),
               onTap: calendarTapped,
               allowedViews: const [
@@ -61,12 +98,11 @@ class HomePage extends ConsumerWidget {
                 CalendarView.schedule
               ],
             ),
+            ),
           ],
-       // ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          ref.read(countProvider.state).state+=1;
           addEvent(app!);
         },
         child: const Icon(Icons.add),
@@ -74,35 +110,7 @@ class HomePage extends ConsumerWidget {
     );
   }
 
-  List<Widget> get _children => List<Widget>.generate(1, (index) => Padding(
-    padding: const EdgeInsets.all(2),
-    child: SizedBox(
-      height: 100,
-      width: 120,
-      child: GestureDetector(
-        onTap: () {
-          showDialog(
-            barrierColor: background(number)!.withOpacity(0.3),
-            context: context1,
-            barrierDismissible: true,
-            builder: (_) {
-              return AlertDialog(
-                title:  Text("目標 "+(number+1).toString()+" の具体例"),
-                content: Text(explanation[number]),
-                actions: [
-                  FlatButton(
-                    child: const Text("Cancel"),
-                    onPressed: () => Navigator.pop(context1),
-                  ),
-                ],
-              );
-            },
-          );
-        },
-        child:Image.asset('image/'+(number+1).toString()+'.jpg',width: 150,height: 100,),
-      ),
-    ),
-  ));
+
   Color? background(int number){
     switch(number){
       case 0:
