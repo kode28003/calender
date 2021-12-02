@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:calender/apps/count.dart';
@@ -10,25 +12,24 @@ Appointment? app;
 class HomePage extends ConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
   static const String route = '/home';
+
   @override
   Widget build(BuildContext context,WidgetRef ref){
-
     _dataSource = _getDataSource();
-
     return Scaffold(
       appBar: AppBar(
         title:  const Text('SDGs App')
       ),
-      body: Center(
-        child: Column(
-          //mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // const FittedBox(
-            //   child:Text(
-            //     'You have pushed the button this many times:',style: TextStyle(fontSize: 20),
-            //   ),
-            // ),
 
+      body: ListView(
+          children: [
+            SizedBox(
+              height: 50,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: _children,
+              ),
+            ),
             SfCalendar(
               view: CalendarView.month,
               dataSource: _dataSource,
@@ -47,7 +48,7 @@ class HomePage extends ConsumerWidget {
               ],
             ),
           ],
-        ),
+       // ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -58,6 +59,19 @@ class HomePage extends ConsumerWidget {
       ),
     );
   }
+  List<Widget> get _children => List<Widget>.generate(1, (index) => Padding(
+    padding: const EdgeInsets.all(4),
+    child: SizedBox(
+      height: 100,
+      width: 120,
+      child: GestureDetector(
+        onTap: () {
+          print('aaa');
+        },
+        child:Image.asset('image/'+Random.secure().nextInt(10).toString()+'.jpg',width: 150,height: 100,),
+      ),
+    ),
+  ));
 }
 
 class Count extends ConsumerWidget{
