@@ -46,6 +46,7 @@ class HomePage extends ConsumerWidget {
               view: CalendarView.month,
               dataSource: _dataSource,
               monthViewSettings: const MonthViewSettings(showAgenda: true),
+              scheduleViewSettings: const ScheduleViewSettings(),
               onTap: calendarTapped,
               allowedViews: const [
                 CalendarView.day,
