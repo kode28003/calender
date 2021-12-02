@@ -1,5 +1,4 @@
-import 'dart:math';
-
+import 'package:calender/apps/random.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:calender/apps/count.dart';
@@ -8,6 +7,16 @@ import 'package:flutter/widgets.dart';
 
 CalendarDataSource? _dataSource;
 Appointment? app;
+dynamic context1;
+int number=1;
+final explanation=[
+  '2030年までに、現在１日1.25ドル未満で生活する人々と定義されている極度の貧困をあらゆる場所で終わらせる。',
+  '2030年までに、飢餓を撲滅し、全ての人々、特に貧困層及び幼児を含む脆弱な立場にある人々が一年中安全かつ栄養のある食料を十分得られるようにする。',
+  '2030年までに、世界の妊産婦の死亡率を出生10万人当たり70人未満に削減する。',
+  '2030年までに、全ての子供が男女の区別なく、適切かつ効果的な学習成果をもたらす、無償かつ公正で質の高い初等教育及び中等教育を修了できるようにする。',
+  'あらゆる場所における全ての女性及び女児に対するあらゆる形態の差別を撤廃する。',
+  '2030年までに、全ての人々の、安全で安価な飲料水の普遍的かつ衡平なアクセスを達成する。',
+];
 
 class HomePage extends ConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -16,11 +25,14 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context,WidgetRef ref){
     _dataSource = _getDataSource();
+    context1=context;
+    final random=ref.watch(randomProvider);
+    number=random.nextInt(6);
+        
     return Scaffold(
       appBar: AppBar(
         title:  const Text('SDGs App')
       ),
-
       body: ListView(
           children: [
             SizedBox(
@@ -59,6 +71,7 @@ class HomePage extends ConsumerWidget {
       ),
     );
   }
+
   List<Widget> get _children => List<Widget>.generate(1, (index) => Padding(
     padding: const EdgeInsets.all(4),
     child: SizedBox(
@@ -67,8 +80,24 @@ class HomePage extends ConsumerWidget {
       child: GestureDetector(
         onTap: () {
           print('aaa');
+          showDialog(
+            context: context1,
+            barrierDismissible: false,
+            builder: (_) {
+              return AlertDialog(
+                title: const Text("詳細"),
+                content: Text(explanation[number]),
+                actions: [
+                  FlatButton(
+                    child: const Text("Cancel"),
+                    onPressed: () => Navigator.pop(context1),
+                  ),
+                ],
+              );
+            },
+          );
         },
-        child:Image.asset('image/'+Random.secure().nextInt(10).toString()+'.jpg',width: 150,height: 100,),
+        child:Image.asset('image/'+(number+1).toString()+'.jpg',width: 150,height: 100,),
       ),
     ),
   ));
@@ -87,57 +116,6 @@ class Count extends ConsumerWidget{
   }
 }
 
-/*
-List<Event> _getDataSource() {
-  final List<Event> event = <Event>[];
-    final DateTime today = DateTime.now();
-    final DateTime startTime =
-    DateTime(today.year, today.month, today.day , 9, 0, 0);
-    final DateTime endTime = startTime.add(const Duration(hours: 2));
-    event.add(Event('イベント', startTime, endTime, const Color(0xFF0F8644), false));
-  return event;
-}
-
-class EventDataSource extends CalendarDataSource {
-  EventDataSource(List<Event> event) {
-    appointments = event;
-  }
-
-  @override
-  Color getColor(int index) {
-    return appointments![index].background;
-  }
-
-  @override
-  DateTime getEndTime(int index) {
-    return appointments![index].to;
-  }
-
-  @override
-  DateTime getStartTime(int index) {
-    return appointments![index].from;
-  }
-
-  @override
-  String getSubject(int index) {
-    return appointments![index].eventName;
-  }
-
-  @override
-  bool isAllDay(int index) {
-    return appointments![index].isAllDay;
-  }
-}
-
-class Event {
-  Event(this.eventName, this.from, this.to, this.background, this.isAllDay);
-  Color background;
-  String eventName;
-  DateTime from;
-  bool isAllDay;
-  DateTime to;
-}
-*/
 void calendarTapped(CalendarTapDetails calendarTapDetails) {
      app = Appointment(
       startTime: calendarTapDetails.date!,
