@@ -18,6 +18,7 @@ final explanation=[
   '2030年までに、全ての人々の、安全で安価な飲料水の普遍的かつ衡平なアクセスを達成する。',
 ];
 
+
 class HomePage extends ConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
   static const String route = '/home';
@@ -36,7 +37,7 @@ class HomePage extends ConsumerWidget {
       body: ListView(
           children: [
             SizedBox(
-              height: 50,
+              height: 70,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: _children,
@@ -45,7 +46,7 @@ class HomePage extends ConsumerWidget {
             SfCalendar(
               view: CalendarView.month,
               dataSource: _dataSource,
-              monthViewSettings: const MonthViewSettings(showAgenda: true),
+              monthViewSettings: const MonthViewSettings(showAgenda: true,appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
               scheduleViewSettings: const ScheduleViewSettings(),
               onTap: calendarTapped,
               allowedViews: const [
@@ -74,19 +75,19 @@ class HomePage extends ConsumerWidget {
   }
 
   List<Widget> get _children => List<Widget>.generate(1, (index) => Padding(
-    padding: const EdgeInsets.all(4),
+    padding: const EdgeInsets.all(2),
     child: SizedBox(
       height: 100,
       width: 120,
       child: GestureDetector(
         onTap: () {
-          print('aaa');
           showDialog(
+            barrierColor: background(number)!.withOpacity(0.3),
             context: context1,
-            barrierDismissible: false,
+            barrierDismissible: true,
             builder: (_) {
               return AlertDialog(
-                title: const Text("詳細"),
+                title:  Text("目標 "+(number+1).toString()+" の具体例"),
                 content: Text(explanation[number]),
                 actions: [
                   FlatButton(
@@ -102,6 +103,22 @@ class HomePage extends ConsumerWidget {
       ),
     ),
   ));
+  Color? background(int number){
+    switch(number){
+      case 0:
+        return  Colors.red;
+      case 1:
+        return  Colors.yellow;
+      case 2:
+        return  Colors.green;
+      case 3:
+        return  Colors.red;
+      case 4:
+        return  Colors.orange;
+      case 5:
+        return  Colors.blue;
+    }
+  }
 }
 
 class Count extends ConsumerWidget{
