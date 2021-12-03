@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:calender/apps/count.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:calender/page/todo.dart';
 
 CalendarDataSource? _dataSource;
 Appointment? app;
@@ -29,42 +31,45 @@ class HomePage extends ConsumerWidget {
     ref.watch(countProvider);
     number=random.nextInt(6);//0~5までのrandomをもとめる
         
-    return Scaffold(
-      appBar: AppBar(
-        title:  const Text('SDGs App'),
+    return CupertinoPageScaffold(
+      navigationBar: new CupertinoNavigationBar(
+        trailing: Icon(CupertinoIcons.forward),
       ),
-      body: Stack(
+        child: Stack(
             children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                child:SizedBox(
-                  height: 62,
-                child: GestureDetector(
-                onTap: () {
-                  showDialog(
-                    barrierColor: background(number)!.withOpacity(0.3),
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (_) {
-                      return AlertDialog(
+                Positioned(
+                  //alignment: Alignment.topLeft,
+                  top: 55,
+                  right: 210,
+                  child:SizedBox(
+                  height: 77,
+                  child: CupertinoButton(
+                  onPressed: () {
+                    showCupertinoDialog<void>(
+                        barrierDismissible: true,
+                        context: context,
+                        builder: (BuildContext context) => CupertinoAlertDialog(
                         title:  Text("目標 "+(number+1).toString()+" の具体例"),
                         content: Text(explanation[number]),
-                        actions: [
-                          FlatButton(
+                        actions: <CupertinoDialogAction>[
+                        CupertinoDialogAction(
                             child: const Text("Cancel"),
                             onPressed: () => Navigator.pop(context),
                           ),
                         ],
-                      );
-                    },
+                      ),
                   );
                 },
-                child:Image.asset('image/'+(number+1).toString()+'.jpg',width: 150,height: 100,),
+                  child:Image.asset('image/'+(number+1).toString()+'.jpg',width: 150,height: 100,),
               ),
             ),
                 ),
-                Align(
-                  alignment: Alignment.topRight,
+                Positioned(
+                  top: 60,
+                  left: 300,
+                child:Container(
+                  width: 50,
+                  padding: EdgeInsets.all(3),
                 child:FloatingActionButton(
                   backgroundColor: Colors.white,
                   onPressed: () {
@@ -75,6 +80,7 @@ class HomePage extends ConsumerWidget {
                       size: 36,
                       color: Colors.blue,
                       ),
+                ),
                 ),
                 ),
             Align(
@@ -102,14 +108,18 @@ class HomePage extends ConsumerWidget {
             ),
             ),
             ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child:FloatingActionButton(
+                  onPressed: () {
+                    addEvent(app!);
+                  },
+                  child: const Icon(Icons.add),
+                ),
+              ),
           ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          addEvent(app!);
-        },
-        child: const Icon(Icons.add),
-      ),
+
     );
   }
 
@@ -136,12 +146,36 @@ class Count extends ConsumerWidget{
   const Count({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context,WidgetRef ref){
-    final count=ref.watch(countProvider);
-    return Center(
-      child:FittedBox(
-        child:Text('count is $count',style: const TextStyle(fontSize:25),),
-      ),
-      );
+    // return CupertinoTabScaffold(
+    //   tabBar: CupertinoTabBar(
+    //     items: [
+    //       BottomNavigationBarItem(
+    //         icon: Icon(CupertinoIcons.clock),
+    //         label: 'テストページ1',
+    //       ),
+    //       BottomNavigationBarItem(
+    //         icon: Icon(CupertinoIcons.book),
+    //         label: 'テストページ2',
+    //       ),
+    //     ],
+    //   ),
+      // tabBuilder: (context, index) {
+      //   return CupertinoTabView(
+      //     builder: (context) {
+      //       switch (index) {
+      //         case 0:
+      //           return HomePage();
+      //         case 1:
+      //           return TodoPage();
+      //         default:
+      //           break;
+      //       }
+      //     },
+      //   );
+      // },
+
+   // );
+    return Text('a');
   }
 }
 

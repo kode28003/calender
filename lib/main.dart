@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:calender/page/home.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:calender/page/top.dart';
+import 'package:flutter/cupertino.dart';
 
 
 void main() {
@@ -16,10 +17,8 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context,WidgetRef ref) {
     return MaterialApp(
       title: 'SDGs App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const HomePage(),
+      theme: ThemeData.light(),
+        home: const HomePage(),
     onGenerateRoute: (routeSettings) {
     switch (routeSettings.name) {
     case HomePage.route:
