@@ -20,7 +20,7 @@ final explanation=[
 ];
 
 final status=[
-
+  '2016年から2021年期間での日本の平均順位は16位、',
 ];
 
 class HomePage extends ConsumerWidget {
@@ -55,7 +55,7 @@ class HomePage extends ConsumerWidget {
                         context: context,
                         builder: (BuildContext context) => CupertinoAlertDialog(
                         title:  Text("目標 "+(number+1).toString()+" の具体例"),
-                        content: Text(explanation[number]),
+                        content: Text("\n"+explanation[number]),
                         actions: <CupertinoDialogAction>[
                         CupertinoDialogAction(
                             child: const Text("Cancel"),
@@ -78,11 +78,11 @@ class HomePage extends ConsumerWidget {
                 Positioned(
                   top: 0,
                   left: 300,
-                child:Container(
+                  child:Container(
                   width: 53,
                   padding: EdgeInsets.all(3),
-                child:FloatingActionButton(
-                  backgroundColor: Colors.white,
+                  child:FloatingActionButton(
+                  backgroundColor: Colors.brown.shade50,
                   onPressed: () {
                     ref.read(countProvider.state).state+=1;
                   },
@@ -91,15 +91,15 @@ class HomePage extends ConsumerWidget {
                       size: 36,
                       color: Colors.black54,
                       ),
-                ),
-                ),
+                    ),
+                  ),
                 ),
               Event(),
               Positioned(
                 bottom: 7,
                 right: 8,
                 child:FloatingActionButton(
-                  backgroundColor: Colors.white,
+                  backgroundColor: Colors.brown.shade50,
                   foregroundColor: Colors.black54,
                   onPressed: () {
                     addEvent(app!);
@@ -161,14 +161,12 @@ class Event extends ConsumerWidget {
   }
 }
 
-
 void calendarTapped(CalendarTapDetails calendarTapDetails) {
      app = Appointment(
       startTime: calendarTapDetails.date!,
       endTime: calendarTapDetails.date!.add(const Duration(hours: 1)),
       subject: '約束',
-      color: Colors.grey);
-
+      color: Colors.black54);
 }
 void addEvent(Appointment app){
   _dataSource!.appointments!.add(app);
@@ -182,7 +180,7 @@ _DataSource _getDataSource() {
     startTime: DateTime.now(),
     endTime: DateTime.now().add(const Duration(hours: 1)),
     subject: 'Meeting',
-    color: Colors.grey,
+    color: Colors.black54,
   ));
   return _DataSource(appointments);
 }
