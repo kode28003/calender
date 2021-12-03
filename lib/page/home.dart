@@ -33,14 +33,13 @@ class HomePage extends ConsumerWidget {
       appBar: AppBar(
         title:  const Text('SDGs App'),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: Stack(
             children: [
-              Row(
-              children:[
-                SizedBox(
-                height: 65,
-              child: GestureDetector(
+                Align(
+                  alignment: Alignment.topLeft,
+                child:SizedBox(
+                  height: 62,
+                child: GestureDetector(
                 onTap: () {
                   showDialog(
                     barrierColor: background(number)!.withOpacity(0.3),
@@ -63,8 +62,10 @@ class HomePage extends ConsumerWidget {
                 child:Image.asset('image/'+(number+1).toString()+'.jpg',width: 150,height: 100,),
               ),
             ),
-                Text('                                           '),
-                FloatingActionButton(
+                ),
+                Align(
+                  alignment: Alignment.topRight,
+                child:FloatingActionButton(
                   backgroundColor: Colors.white,
                   onPressed: () {
                     ref.read(countProvider.state).state+=1;
@@ -75,17 +76,18 @@ class HomePage extends ConsumerWidget {
                       color: Colors.blue,
                       ),
                 ),
-               ],
-              ),
-            SizedBox(
-              height: 440,
+                ),
+            Align(
+              alignment: Alignment.center,
+              child:Container(
+                height: 360,
               child:SfCalendar(
               view: CalendarView.month,
               dataSource: _dataSource,
-              headerHeight:  29,
               monthViewSettings: const MonthViewSettings(showAgenda: true,),
               scheduleViewSettings: const ScheduleViewSettings(),
               onTap: calendarTapped,
+
               allowedViews: const [
                 CalendarView.day,
                 CalendarView.week,
@@ -97,6 +99,7 @@ class HomePage extends ConsumerWidget {
                 CalendarView.timelineMonth,
                 CalendarView.schedule
               ],
+            ),
             ),
             ),
           ],
