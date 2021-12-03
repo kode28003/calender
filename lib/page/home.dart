@@ -19,6 +19,9 @@ final explanation=[
   '2030年までに、全ての人々の、安全で安価な飲料水の普遍的かつ衡平なアクセスを達成する。',
 ];
 
+final status=[
+
+];
 
 class HomePage extends ConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -30,22 +33,24 @@ class HomePage extends ConsumerWidget {
     final random=ref.watch(randomProvider);
     ref.watch(countProvider);
     number=random.nextInt(6);//0~5までのrandomをもとめる
-        
     return CupertinoPageScaffold(
+      backgroundColor: Colors.brown.shade50,
       navigationBar: new CupertinoNavigationBar(
+        backgroundColor: Colors.brown.shade50,
         trailing: Icon(CupertinoIcons.forward),
       ),
         child: Stack(
             children: [
                 Positioned(
                   //alignment: Alignment.topLeft,
-                  top: 55,
-                  right: 210,
+                  top: -8,
+                  right: 200,
                   child:SizedBox(
-                  height: 77,
+                  height: 85,
                   child: CupertinoButton(
                   onPressed: () {
                     showCupertinoDialog<void>(
+                        //barrierColor: background(number)!.withOpacity(0.3),
                         barrierDismissible: true,
                         context: context,
                         builder: (BuildContext context) => CupertinoAlertDialog(
@@ -60,15 +65,21 @@ class HomePage extends ConsumerWidget {
                       ),
                   );
                 },
-                  child:Image.asset('image/'+(number+1).toString()+'.jpg',width: 150,height: 100,),
+                  child:Image.asset(
+                    'image/'+(number+1).toString()+'.jpg',
+                    width: 150,
+                    height: 100,
+                    colorBlendMode: BlendMode.srcOver,
+                    color: Colors.brown.shade50.withOpacity(0.2),
+                  ),
               ),
             ),
                 ),
                 Positioned(
-                  top: 60,
+                  top: 0,
                   left: 300,
                 child:Container(
-                  width: 50,
+                  width: 53,
                   padding: EdgeInsets.all(3),
                 child:FloatingActionButton(
                   backgroundColor: Colors.white,
@@ -78,39 +89,18 @@ class HomePage extends ConsumerWidget {
                   child: const Icon(
                       Icons.refresh,
                       size: 36,
-                      color: Colors.blue,
+                      color: Colors.black54,
                       ),
                 ),
                 ),
                 ),
-            Align(
-              alignment: Alignment.center,
-              child:Container(
-                height: 360,
-              child:SfCalendar(
-              view: CalendarView.month,
-              dataSource: _dataSource,
-              monthViewSettings: const MonthViewSettings(showAgenda: true,),
-              scheduleViewSettings: const ScheduleViewSettings(),
-              onTap: calendarTapped,
-
-              allowedViews: const [
-                CalendarView.day,
-                CalendarView.week,
-                CalendarView.workWeek,
-                CalendarView.month,
-                CalendarView.timelineDay,
-                CalendarView.timelineWeek,
-                CalendarView.timelineWorkWeek,
-                CalendarView.timelineMonth,
-                CalendarView.schedule
-              ],
-            ),
-            ),
-            ),
-              Align(
-                alignment: Alignment.bottomRight,
+              Event(),
+              Positioned(
+                bottom: 7,
+                right: 8,
                 child:FloatingActionButton(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black54,
                   onPressed: () {
                     addEvent(app!);
                   },
@@ -119,11 +109,8 @@ class HomePage extends ConsumerWidget {
               ),
           ],
       ),
-
     );
   }
-
-
   Color? background(int number){
     switch(number){
       case 0:
@@ -142,49 +129,45 @@ class HomePage extends ConsumerWidget {
   }
 }
 
-class Count extends ConsumerWidget{
-  const Count({Key? key}) : super(key: key);
-  @override
+class Event extends ConsumerWidget {
   Widget build(BuildContext context,WidgetRef ref){
-    // return CupertinoTabScaffold(
-    //   tabBar: CupertinoTabBar(
-    //     items: [
-    //       BottomNavigationBarItem(
-    //         icon: Icon(CupertinoIcons.clock),
-    //         label: 'テストページ1',
-    //       ),
-    //       BottomNavigationBarItem(
-    //         icon: Icon(CupertinoIcons.book),
-    //         label: 'テストページ2',
-    //       ),
-    //     ],
-    //   ),
-      // tabBuilder: (context, index) {
-      //   return CupertinoTabView(
-      //     builder: (context) {
-      //       switch (index) {
-      //         case 0:
-      //           return HomePage();
-      //         case 1:
-      //           return TodoPage();
-      //         default:
-      //           break;
-      //       }
-      //     },
-      //   );
-      // },
-
-   // );
-    return Text('a');
+    return Align(
+      alignment: Alignment.center,
+      child:Container(
+        height: 370,
+        child:SfCalendar(
+          todayHighlightColor: Colors.black54,
+          cellBorderColor: Colors.black38,
+          backgroundColor: Colors.brown.shade50,
+          view: CalendarView.month,
+          dataSource: _dataSource,
+          monthViewSettings: const MonthViewSettings(showAgenda: true,),
+          scheduleViewSettings: const ScheduleViewSettings(),
+          onTap: calendarTapped,
+          allowedViews: const [
+            CalendarView.day,
+            CalendarView.week,
+            CalendarView.workWeek,
+            CalendarView.month,
+            CalendarView.timelineDay,
+            CalendarView.timelineWeek,
+            CalendarView.timelineWorkWeek,
+            CalendarView.timelineMonth,
+            CalendarView.schedule
+          ],
+        ),
+      ),
+    );
   }
 }
+
 
 void calendarTapped(CalendarTapDetails calendarTapDetails) {
      app = Appointment(
       startTime: calendarTapDetails.date!,
       endTime: calendarTapDetails.date!.add(const Duration(hours: 1)),
       subject: '約束',
-      color: Colors.greenAccent);
+      color: Colors.grey);
 
 }
 void addEvent(Appointment app){
@@ -199,7 +182,7 @@ _DataSource _getDataSource() {
     startTime: DateTime.now(),
     endTime: DateTime.now().add(const Duration(hours: 1)),
     subject: 'Meeting',
-    color: Colors.teal,
+    color: Colors.grey,
   ));
   return _DataSource(appointments);
 }
