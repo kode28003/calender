@@ -24,16 +24,16 @@ final explanation=[
 ];
 
 final status=[
-  '　世界では、6人に1人（3億5600万人）の子どもたちが、「極度にまずしい」暮らしをしています。',
-  '　明日以降も食べ物を得られるか分からない状態の人が世界人口の10%もいます。',
-  '　サハラ以南のアフリカ地域では、2人に1人の子どもが、かぜで肺炎になっても治療を受けられません。',
-  '　アフリカ地域、南アジア地域では、6〜11歳の子どものうち5人に1人が小学校に通えません。',
-  '　6歳から11歳の子どものうち、一生学校に通うことができない女の子は男の子の約2倍です。',
-  '　水道の設備がない暮らしをしている人は22億人です。屋外で用を足す人は6億7300万人です。',
-  '　世界で電力を使えない人は7億8900万人です。',
-  '　世界のもっと貧しい国では、5歳から17歳までの子どもの4人に1人が、労働を強いられています。',
-  '　世界では、約37億人の人びとがインターネットにアクセスできません。',
-  '　2017年には、世界のもっとも豊かな1%の人が世界全体の富の約33%を持っていました。',
+  ' 世界では、6人に1人（3億5600万人）の子どもたちが、「極度にまずしい」暮らしをしています。',
+  ' 明日以降も食べ物を得られるか分からない状態の人が世界人口の10%もいます。',
+  ' サハラ以南のアフリカ地域では、2人に1人の子どもが風邪で肺炎になっても治療を受けられません。',
+  ' アフリカ地域、南アジア地域では、6〜11歳の子どものうち5人に1人が小学校に通えません。',
+  ' 6歳から11歳の子どものうち、一生学校に通うことができない女の子は男の子の約2倍です。',
+  ' 水道の設備がない暮らしをしている人は22億人です。屋外で用を足す人は6億7300万人です。',
+  ' 世界で電力を使えない人は7億8900万人です。',
+  ' 世界のもっと貧しい国では、5歳から17歳までの子どもの4人に1人が、労働を強いられています。',
+  ' 世界では、約37億人の人々がインターネットにアクセスできません。',
+  ' 2017年には、世界の最も豊かな1%の人が世界全体の富の約33%を持っていました。',
 ];
 
 class HomePage extends ConsumerWidget {
@@ -123,16 +123,32 @@ class HomePage extends ConsumerWidget {
                 ),
               ),
               ),
+              Container(
+                padding: EdgeInsets.fromLTRB(4,383,2,2),
+                child:RichText(
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  text:TextSpan(
+                    text:'目標'+(number+1).toString()+' の現状',
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black54,
+                        decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+              ),
                Container(
-                 padding: EdgeInsets.fromLTRB(4,410,2,2),
+                 padding: EdgeInsets.fromLTRB(4,415,2,2),
                child:RichText(
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 3,
                 text:TextSpan(
-                text:explanation[number],
+                text:status[number],
                   style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 16,
                       color: Colors.black54
                   ),
                 ),
