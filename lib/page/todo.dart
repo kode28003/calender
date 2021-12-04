@@ -1,3 +1,5 @@
+import 'package:calender/apps/count.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/widgets.dart';
@@ -8,13 +10,21 @@ class ToDoPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context,WidgetRef ref){
-    return Scaffold(
-      appBar: AppBar(
-          title:  const Text('SDGs App')
+    return CupertinoPageScaffold(
+      backgroundColor: Colors.brown.shade50,
+      navigationBar: new CupertinoNavigationBar(
+        backgroundColor: Colors.brown.shade50,
+        leading: CupertinoNavigationBarBackButton(
+          color: Colors.black,
+          previousPageTitle: 'Calendar',
+          onPressed: (){
+            Navigator.pop(context);
+            //ref.read(countUpNotifierProvider).startTimer();
+            ref.read(countProvider.state).state+=1;
+          },
+        ),
       ),
-      body: Center(
-        child:const Text('toDo'),
-      ),
+      child: Text('aaa')
     );
   }
 }

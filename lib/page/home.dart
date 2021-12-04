@@ -6,10 +6,16 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:calender/page/todo.dart';
+import 'package:calender/apps/calendar.dart';
 
 CalendarDataSource? _dataSource;
 Appointment? app;
+Appointment? event;
 int number=1;
+int? startDay;
+int? endDays;
+
+
 final explanation=[
   '2030年までに、現在１日1.25ドル未満で生活する人々と定義されている極度の貧困をあらゆる場所で終わらせる。',
   '2030年までに、飢餓を撲滅し、全ての人々が一年中安全かつ栄養のある食料を十分得られるようにする。',
@@ -26,14 +32,27 @@ final explanation=[
 final status=[
   ' 世界では、6人に1人（3億5600万人）の子どもたちが、「極度にまずしい」暮らしをしています。',
   ' 明日以降も食べ物を得られるか分からない状態の人が世界人口の10%もいます。',
-  ' サハラ以南のアフリカ地域では、2人に1人の子どもが風邪で肺炎になっても治療を受けられません。',
+  ' サハラ以南のアフリカ地域では、2人に1人の　　子どもが風邪で肺炎になっても治療を受けられません。',
   ' アフリカ地域、南アジア地域では、6〜11歳の子どものうち5人に1人が小学校に通えません。',
-  ' 6歳から11歳の子どものうち、一生学校に通うことができない女の子は男の子の約2倍です。',
+  ' 6歳から11歳の子どものうち、一生学校に通うことができない女の子は男の子の約2倍います。',
   ' 水道の設備がない暮らしをしている人は22億人です。屋外で用を足す人は6億7300万人です。',
   ' 世界で電力を使えない人は7億8900万人です。',
   ' 世界のもっと貧しい国では、5歳から17歳までの子どもの4人に1人が、労働を強いられています。',
   ' 世界では、約37億人の人々がインターネットにアクセスできません。',
   ' 2017年には、世界の最も豊かな1%の人が世界全体の富の約33%を持っていました。',
+];
+
+final num=[
+  '１',
+  '２',
+  '３',
+  '４',
+  '５',
+  '６',
+  '７',
+  '８',
+  '９',
+  '１０',
 ];
 
 class HomePage extends ConsumerWidget {
@@ -46,6 +65,7 @@ class HomePage extends ConsumerWidget {
     final random=ref.watch(randomProvider);
     ref.watch(countProvider);
     number=random.nextInt(10);//0~9までのrandomをもとめる
+    //ref.watch(countUpNotifierProvider);
 
     return CupertinoPageScaffold(
       backgroundColor: Colors.brown.shade50,
@@ -53,6 +73,7 @@ class HomePage extends ConsumerWidget {
           backgroundColor: Colors.brown.shade50,
           trailing: //Icon(CupertinoIcons.forward),
           CupertinoNavigationBarBackButton(
+            color: Colors.black,
             previousPageTitle: 'ToDo List',
             onPressed: (){
               Navigator.pushNamed(context, ToDoPage.route);
@@ -123,25 +144,29 @@ class HomePage extends ConsumerWidget {
                 child:FloatingActionButton(
                   backgroundColor: Colors.brown.shade50,
                   foregroundColor: Colors.black54,
-                  onPressed: () {
-                    addEvent(app!);
+                  onPressed: () async{
+                    await endDay(context);
+                    await startTimes(context);
+                    await endTimes(context);
+                    addEvent();
                   },
                   child: const Icon(Icons.add),
                 ),
               ),
               ),
               Container(
-                padding: EdgeInsets.fromLTRB(4,383,2,2),
+                padding: EdgeInsets.fromLTRB(8,383,2,2),
                 child:RichText(
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   text:TextSpan(
-                    text:'目標'+(number+1).toString()+' の現状',
+                    text:'目標'+(num[number])+'の現状',
                     style: TextStyle(
                         fontSize: 20,
-                        color: Colors.black54,
+                        color: Colors.black ,
                         decoration: TextDecoration.underline,
+                      decorationThickness: 3,
                     ),
                   ),
                 ),
@@ -160,7 +185,7 @@ class HomePage extends ConsumerWidget {
                   ),
                 ),
               ),
-               ),
+            ),
           ],
       ),
     );
@@ -216,16 +241,19 @@ class Event extends ConsumerWidget {
 }
 
 void calendarTapped(CalendarTapDetails calendarTapDetails) {
-     app = Appointment(
-      startTime: calendarTapDetails.date!,
-      endTime: calendarTapDetails.date!.add(const Duration(hours: 1)),
+  startDay=calendarTapDetails.date!.day;
+
+}
+
+void addEvent(){
+  event = Appointment(
+      startTime: startValue!,
+      endTime: endValue!,
       subject: '約束',
       color: Colors.black54);
-}
-void addEvent(Appointment app){
-  _dataSource!.appointments!.add(app);
+  _dataSource!.appointments!.add(event);
   _dataSource!.notifyListeners(
-      CalendarDataSourceAction.add, <Appointment>[app]);
+      CalendarDataSourceAction.add, <Appointment>[event!]);
 }
 
 _DataSource _getDataSource() {
