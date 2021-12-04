@@ -38,7 +38,7 @@ final status=[
 
 class HomePage extends ConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
-  static const String route = '/home';
+  static const String route = '/';
 
   @override
   Widget build(BuildContext context,WidgetRef ref){
@@ -46,12 +46,19 @@ class HomePage extends ConsumerWidget {
     final random=ref.watch(randomProvider);
     ref.watch(countProvider);
     number=random.nextInt(10);//0~9までのrandomをもとめる
+
     return CupertinoPageScaffold(
       backgroundColor: Colors.brown.shade50,
-      navigationBar: new CupertinoNavigationBar(
-        backgroundColor: Colors.brown.shade50,
-        trailing: Icon(CupertinoIcons.forward),
-      ),
+        navigationBar: new CupertinoNavigationBar(
+          backgroundColor: Colors.brown.shade50,
+          trailing: //Icon(CupertinoIcons.forward),
+          CupertinoNavigationBarBackButton(
+            previousPageTitle: 'ToDo List',
+            onPressed: (){
+              Navigator.pushNamed(context, ToDoPage.route);
+            },
+          ),
+        ),
         child: Stack(
             children: [
                 Positioned(
@@ -140,7 +147,7 @@ class HomePage extends ConsumerWidget {
                 ),
               ),
                Container(
-                 padding: EdgeInsets.fromLTRB(4,415,2,2),
+               padding: EdgeInsets.fromLTRB(4,415,2,2),
                child:RichText(
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,

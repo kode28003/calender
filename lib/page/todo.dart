@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/widgets.dart';
 
-class TodoPage extends ConsumerWidget {
-  const TodoPage({Key? key}) : super(key: key);
-  static const String route = '/home';
+class ToDoPage extends ConsumerWidget {
+  const ToDoPage({Key? key}) : super(key: key);
+  static const String route = '/todo';
 
   @override
   Widget build(BuildContext context,WidgetRef ref){
@@ -13,7 +13,7 @@ class TodoPage extends ConsumerWidget {
           title:  const Text('SDGs App')
       ),
       body: Center(
-
+        child:const Text('toDo'),
       ),
     );
   }
