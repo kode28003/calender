@@ -72,10 +72,9 @@ class HomePage extends ConsumerWidget {
       backgroundColor: Colors.brown.shade50,
         navigationBar: new CupertinoNavigationBar(
           backgroundColor: Colors.brown.shade50,
-          trailing: //Icon(CupertinoIcons.forward),
-          CupertinoNavigationBarBackButton(
-            color: Colors.black,
-            previousPageTitle: 'ToDo List',
+          trailing: CupertinoButton(
+            padding: EdgeInsets.fromLTRB(90, 0, 10, 5),
+            child: Icon(CupertinoIcons.forward,color: Colors.black,size:30,),
             onPressed: (){
               Navigator.pushNamed(context, ToDoPage.route);
             },

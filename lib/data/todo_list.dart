@@ -50,7 +50,6 @@ class TodoList extends StateNotifier<List<Todo>> {
   }
 
   void counter(String id,WidgetRef ref) {
-    print(id);
     if(id=='1'){
       ref.read(iconCount1Provider.state).state+=3;
       final iconNumber1=ref.read(iconCount1Provider);
@@ -64,16 +63,14 @@ class TodoList extends StateNotifier<List<Todo>> {
       if(iconNumber2==11){
         ref.read(iconCount2Provider.state).state=2;
       }
-
     }
     if(id=='3'){
       ref.read(iconCount3Provider.state).state+=3;
       final iconNumber3=ref.read(iconCount3Provider);
-      if(iconNumber3==9){
+      if(iconNumber3==12){
         ref.read(iconCount3Provider.state).state=3;
       }
     }
-
   }
 
   void edit({required String id, required String description}) {

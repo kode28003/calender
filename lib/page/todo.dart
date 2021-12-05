@@ -25,7 +25,8 @@ final list=[
   '電子書籍を買う',
   '詰め替えのボトルを買う',
   'いらない物をメルカリで売る',
-  'ごみ拾いをする'
+  'ごみ拾いをする',
+  'SDGsについて調べる',
 ];
 
 
@@ -112,6 +113,7 @@ class ToDoPage extends HookConsumerWidget {
             const Title(),
             CupertinoTextField(
               key: addTodoKey,
+              placeholder: 'SDGsの取り組みを入力してね',
               controller: newTodoController,
                 onSubmitted: (value){
                   ref.read(todoListProvider.notifier).add(value);
@@ -242,7 +244,7 @@ class TodoItem extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final todo = ref.watch(_currentTodo);
     final itemFocusNode = useFocusNode();
-    // listen to focus chances
+
     useListenable(itemFocusNode);
     final isFocused = itemFocusNode.hasFocus;
 
