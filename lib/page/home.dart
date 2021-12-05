@@ -14,7 +14,7 @@ Appointment? event;
 int number=1;
 int? startDay;
 int? endDays;
-String appointment='';
+String? appointment;
 
 
 final explanation=[
@@ -154,10 +154,12 @@ class HomePage extends ConsumerWidget {
                   foregroundColor: Colors.black54,
                   onPressed: () async{
                     await InputText(context);
-                    await endDay(context);
-                    await startTimes(context);
-                    await endTimes(context);
-                    addEvent();
+                    if(appointment!=null) {
+                      await endDay(context);
+                      await startTimes(context);
+                      await endTimes(context);
+                      await addEvent();
+                    }
                   },
                   child: const Icon(Icons.add),
                 ),
@@ -254,15 +256,16 @@ void calendarTapped(CalendarTapDetails calendarTapDetails) {
 
 }
 
-void addEvent(){
+Future<void> addEvent() async{
   event = Appointment(
       startTime: startValue!,
       endTime: endValue!,
-      subject: appointment,
+      subject: appointment!,
       color: Colors.black54);
   _dataSource!.appointments!.add(event);
   _dataSource!.notifyListeners(
       CalendarDataSourceAction.add, <Appointment>[event!]);
+  appointment=null;
 }
 
 _DataSource _getDataSource() {

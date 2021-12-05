@@ -44,6 +44,7 @@ Future endTimes(BuildContext context) async{
 
 Future InputText(BuildContext context) async{
   await showCupertinoDialog(
+    barrierDismissible: true,
     context: context,
     builder: (context) {
       return Theme(
@@ -59,6 +60,12 @@ Future InputText(BuildContext context) async{
           },
         ),
         actions: [
+          CupertinoDialogAction(
+            child: Text('cancel',style: TextStyle(color:Colors.black),),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
           CupertinoDialogAction(
             child: Text('ok',style: TextStyle(color:Colors.black),),
             onPressed: () {
