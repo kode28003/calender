@@ -1,3 +1,5 @@
+import 'package:calender/page/todo.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:uuid/uuid.dart';
 
@@ -20,7 +22,6 @@ class Todo {
   }
 }
 
-/// An object that controls a list of [Todo].
 class TodoList extends StateNotifier<List<Todo>> {
   TodoList([List<Todo>? initialTodos]) : super(initialTodos ?? []);
 
@@ -46,6 +47,20 @@ class TodoList extends StateNotifier<List<Todo>> {
         else
           todo,
     ];
+  }
+
+  void counter(String id,WidgetRef ref) {
+    print(id);
+    if(id=='1'){
+      ref.read(iconCount1Provider.state).state+=3;
+      print('bbb');
+    }
+    if(id=='2'){
+      ref.read(iconCount2Provider.state).state+=3;
+    }
+    if(id=='3'){
+      ref.read(iconCount3Provider.state).state+=3;
+    }
   }
 
   void edit({required String id, required String description}) {
