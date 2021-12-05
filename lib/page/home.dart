@@ -111,7 +111,6 @@ class HomePage extends ConsumerWidget {
                             ),
                           ],
                         ),)
-
                   );
                 },
                   child:Image.asset(

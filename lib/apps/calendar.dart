@@ -61,9 +61,10 @@ Future InputText(BuildContext context) async{
         ),
         actions: [
           CupertinoDialogAction(
-            child: Text('cancel',style: TextStyle(color:Colors.black),),
+            child: Text('Cancel',style: TextStyle(color:Colors.black),),
             onPressed: () {
               Navigator.pop(context);
+              appointment=null;
             },
           ),
           CupertinoDialogAction(
