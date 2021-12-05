@@ -34,11 +34,11 @@ final iconCount1Provider = StateProvider((ref) {
 });
 
 final iconCount2Provider = StateProvider((ref) {
-  return 1;
+  return 2;
 });
 
 final iconCount3Provider = StateProvider((ref) {
-  return 1;
+  return 3;
 });
 
 
@@ -48,9 +48,9 @@ final todoListProvider = StateNotifierProvider<TodoList, List<Todo>>((ref) {
   final iconNumber3=ref.watch(iconCount3Provider);
 
   return TodoList([
-    Todo(id: '1', description: list[1*iconNumber1]),
-    Todo(id: '2', description: list[2*iconNumber2]),
-    Todo(id: '3', description: list[3*iconNumber3]),
+    Todo(id: '1', description: list[1+iconNumber1]),
+    Todo(id: '2', description: list[2+iconNumber2]),
+    Todo(id: '3', description: list[3+iconNumber3]),
   ]);
 });
 
@@ -224,7 +224,7 @@ class Title extends StatelessWidget {
       'Monthly To Do List',
       textAlign: TextAlign.center,
       style: TextStyle(
-        color: Color.fromARGB(100, 105, 105, 105),
+        color: Colors.black54,
         fontSize: 25,
         fontFamily: 'Helvetica Neue',
       ),
