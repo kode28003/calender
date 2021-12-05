@@ -14,6 +14,7 @@ Appointment? event;
 int number=1;
 int? startDay;
 int? endDays;
+String appointment='';
 
 
 final explanation=[
@@ -33,7 +34,7 @@ final status=[
   ' 世界では、6人に1人（3億5600万人）の子どもたちが、「極度にまずしい」暮らしをしています。',
   ' 明日以降も食べ物を得られるか分からない状態の人が世界人口の10%もいます。',
   ' サハラ以南のアフリカ地域では、2人に1人の　　子どもが風邪で肺炎になっても治療を受けられません。',
-  ' アフリカ地域、南アジア地域では、6〜11歳の子どものうち5人に1人が小学校に通えません。',
+  ' アフリカ地域、南アジア地域では、6〜11歳の.子どものうち5人に1人が小学校に通えません。',
   ' 6歳から11歳の子どものうち、一生学校に通うことができない女の子は男の子の約2倍います。',
   ' 水道の設備がない暮らしをしている人は22億人です。屋外で用を足す人は6億7300万人です。',
   ' 世界で電力を使えない人は7億8900万人です。',
@@ -94,16 +95,23 @@ class HomePage extends ConsumerWidget {
                         //barrierColor: background(number)!.withOpacity(0.3),
                         barrierDismissible: true,
                         context: context,
-                        builder: (BuildContext context) => CupertinoAlertDialog(
-                        title:  Text("目標 "+(number+1).toString()+" の具体例"),
-                        content: Text("\n"+explanation[number]),
-                        actions: <CupertinoDialogAction>[
-                        CupertinoDialogAction(
-                            child: const Text("Cancel"),
-                            onPressed: () => Navigator.pop(context),
-                          ),
-                        ],
-                      ),
+                        builder: (BuildContext context) => Theme(
+                          data: ThemeData(
+                              dialogBackgroundColor: Colors.brown.shade50,
+                              dialogTheme: DialogTheme(backgroundColor: Colors.brown.shade50)),
+                          child: CupertinoAlertDialog(
+                          title:  Text("目標 "+(number+1).toString()+" の具体例"),
+                          content: Text("\n"+explanation[number]),
+                          actions: <CupertinoDialogAction>[
+                            CupertinoDialogAction(
+                              child: const Text("Cancel",
+                                style: TextStyle(color:Colors.black),
+                              ),
+                              onPressed: () => Navigator.pop(context),
+                            ),
+                          ],
+                        ),)
+
                   );
                 },
                   child:Image.asset(
@@ -145,6 +153,7 @@ class HomePage extends ConsumerWidget {
                   backgroundColor: Colors.brown.shade50,
                   foregroundColor: Colors.black54,
                   onPressed: () async{
+                    await InputText(context);
                     await endDay(context);
                     await startTimes(context);
                     await endTimes(context);
@@ -249,7 +258,7 @@ void addEvent(){
   event = Appointment(
       startTime: startValue!,
       endTime: endValue!,
-      subject: '約束',
+      subject: appointment,
       color: Colors.black54);
   _dataSource!.appointments!.add(event);
   _dataSource!.notifyListeners(

@@ -17,7 +17,11 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context,WidgetRef ref) {
     return MaterialApp(
       title: 'SDGs App',
-      theme: ThemeData.light(),
+      theme: ThemeData.light().copyWith(
+        colorScheme: ColorScheme.light().copyWith(
+          primary: Colors.brown.shade200,
+        )
+      ),
         home: const HomePage(),
     onGenerateRoute: (routeSettings) {
     switch (routeSettings.name) {

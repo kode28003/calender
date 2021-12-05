@@ -42,3 +42,32 @@ Future endTimes(BuildContext context) async{
   }
 }
 
+Future InputText(BuildContext context) async{
+  await showCupertinoDialog(
+    context: context,
+    builder: (context) {
+      return Theme(
+        data: ThemeData(
+            dialogBackgroundColor: Colors.brown.shade50,
+            dialogTheme: DialogTheme(backgroundColor: Colors.brown.shade50)),
+        child: CupertinoAlertDialog(
+        title: Text('予定を入力してください'+'\n',),
+        content: CupertinoTextField(
+          cursorColor: Colors.brown.shade50,
+          onChanged: (value){
+            appointment=value;
+          },
+        ),
+        actions: [
+          CupertinoDialogAction(
+            child: Text('ok',style: TextStyle(color:Colors.black),),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+      );
+    },
+  );
+}
