@@ -1,5 +1,6 @@
 import 'package:calender/apps/count.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/widgets.dart';
@@ -32,6 +33,26 @@ final list=[
   '',
 ];
 
+final company=[
+  '',
+  'アップル',
+  'グーグル',
+  'パナソニック',
+  '花王',
+  'ヤクルトグループ',
+  'トヨタ自動車',
+];
+
+final companyInformation=[
+  '',
+  '2019年、Appleでは1,100万台以上のiPhoneがリサイクルされました。',
+  '米国では、Googleマップで自動車でのルートを検索すると、燃料効率のいいルートを提案されます。',
+  'カンボジアで、子どもが売られない仕組みを作るために、最貧困層の女性向けの雇用の支援を行っています。',
+  '世界各国のジェンダー平等の取り組みが優れている企業に贈られる「2020年男女平等指数」に選ばれました。',
+  '女性が活躍し働きやすい環境づくりとして、ヤクルトレディのお子さんをお預かりする保育所を運営しています。',
+  '電気自動車をより早く普及させるため、車両電動化技術の特許を無償で共有しています。',
+];
+
 
 final iconCount1Provider = StateProvider((ref) {
   return 1;
@@ -43,6 +64,10 @@ final iconCount2Provider = StateProvider((ref) {
 
 final iconCount3Provider = StateProvider((ref) {
   return 3;
+});
+
+final updateCompanyProvider=StateProvider((ref){
+  return 1;
 });
 
 
@@ -63,7 +88,6 @@ enum TodoListFilter {
   active,
   completed,
 }
-
 
 final todoListFilter = StateProvider((_) => TodoListFilter.active);
 
@@ -93,6 +117,7 @@ class ToDoPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final todos = ref.watch(filteredTodos);
     final newTodoController = useTextEditingController();
+    final companyNum=ref.watch(updateCompanyProvider);
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -111,17 +136,50 @@ class ToDoPage extends HookConsumerWidget {
         ),
       ),
         child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 18),
           children: [
             const Title(),
+            Container(
+                padding: EdgeInsets.fromLTRB(10, 10, 5, 2),
+                child: RichText(
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  text: TextSpan(
+                    text: '企業の取り組み：${company[companyNum]}',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                      decoration: TextDecoration.underline,
+                      decorationThickness: 3,
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(8, 10, 5, 15),
+                child: RichText(
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                  text: TextSpan(
+                    text: companyInformation[companyNum],
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                      decorationThickness: 3,
+                    ),
+                  ),
+                ),
+              ),
             CupertinoTextField(
               key: addTodoKey,
               placeholder: 'SDGsの取り組みを入力してね',
               controller: newTodoController,
-                onSubmitted: (value){
-                  ref.read(todoListProvider.notifier).add(value);
-                  newTodoController.clear();
-                },
+              onSubmitted: (value){
+                ref.read(todoListProvider.notifier).add(value);
+                newTodoController.clear();
+              },
             ),
             const SizedBox(height: 20),
             const Toolbar(),
@@ -180,7 +238,7 @@ class Toolbar extends HookConsumerWidget {
                   textColorFor(TodoListFilter.active),
                 ),
               ),
-              child: const Text('Active'),
+            child: const Text('Active'),
             ),
           ),
           Tooltip(
@@ -209,7 +267,25 @@ class Toolbar extends HookConsumerWidget {
                 foregroundColor:
                 MaterialStateProperty.all(textColorFor(TodoListFilter.all)),
               ),
-              child: const Text('All'),
+            child: const Text('All'),
+            ),
+          ),
+          Container(//////////////////////////////////
+            width: 42,
+            padding: EdgeInsets.all(2),
+            child:FloatingActionButton(
+              backgroundColor: Colors.brown.shade50,
+              onPressed: () {
+                final company=ref.read(updateCompanyProvider.state).state+=1;
+                if(company==6){
+                  ref.read(updateCompanyProvider.state).state=1;
+                }
+              },
+              child: const Icon(
+                Icons.refresh,
+                size: 36,
+                color: Colors.black54,
+              ),
             ),
           ),
         ],
@@ -230,7 +306,7 @@ class Title extends StatelessWidget {
       textAlign: TextAlign.center,
       style: TextStyle(
         color: Colors.black54,
-        fontSize: 25,
+        fontSize: 28,
         fontFamily: 'Helvetica Neue',
       ),
     ),
@@ -250,7 +326,6 @@ class TodoItem extends HookConsumerWidget {
 
     useListenable(itemFocusNode);
     final isFocused = itemFocusNode.hasFocus;
-
     final textEditingController = useTextEditingController();
     final textFieldFocusNode = useFocusNode();
 
@@ -268,7 +343,11 @@ class TodoItem extends HookConsumerWidget {
                 .edit(id: todo.id, description: textEditingController.text);
           }
         },
+        child: SingleChildScrollView(
+        child: Container(
+        height: 50,
         child: ListTile(
+          horizontalTitleGap:3,
           onTap: () {
             itemFocusNode.requestFocus();
             textFieldFocusNode.requestFocus();
@@ -295,6 +374,8 @@ class TodoItem extends HookConsumerWidget {
               ref.read(todoListProvider.notifier).counter(todo.id,ref);
             },
           ),
+        ),
+      ),
         ),
       ),
     );

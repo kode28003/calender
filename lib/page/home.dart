@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:calender/page/todo.dart';
 import 'package:calender/apps/calendar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 CalendarDataSource? _dataSource;
 Appointment? app;
@@ -65,8 +66,7 @@ class HomePage extends ConsumerWidget {
     _dataSource = _getDataSource();
     final random=ref.watch(randomProvider);
     ref.watch(countProvider);
-    number=random.nextInt(10);//0~9までのrandomをもとめる
-    //ref.watch(countUpNotifierProvider);
+    number=random.nextInt(10);//0~9までのrandom
 
     return CupertinoPageScaffold(
       backgroundColor: Colors.brown.shade50,
@@ -107,6 +107,13 @@ class HomePage extends ConsumerWidget {
                                 style: TextStyle(color:Colors.black),
                               ),
                               onPressed: () => Navigator.pop(context),
+                            ),
+                            CupertinoDialogAction(
+                              child: Text('詳しく ↗',style: TextStyle(color:Colors.black),),
+                              onPressed: () {
+                              Navigator.pop(context);
+                              launchURL();
+                            },
                             ),
                           ],
                         ),)
@@ -237,11 +244,11 @@ class Event extends ConsumerWidget {
             CalendarView.week,
             CalendarView.workWeek,
             CalendarView.month,
-            CalendarView.timelineDay,
-            CalendarView.timelineWeek,
-            CalendarView.timelineWorkWeek,
-            CalendarView.timelineMonth,
-            CalendarView.schedule
+            // CalendarView.timelineDay,
+            // CalendarView.timelineWeek,
+            // CalendarView.timelineWorkWeek,
+            //CalendarView.timelineMonth,
+            //CalendarView.schedule
           ],
         ),
       ),
@@ -277,8 +284,18 @@ _DataSource _getDataSource() {
   return _DataSource(appointments);
 }
 
+launchURL() async {
+  const url = "https://www.unicef.or.jp/kodomo/sdgs/";
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not Launch $url';
+  }
+}
+
 class _DataSource extends CalendarDataSource {
   _DataSource(List<Appointment> source) {
     appointments = source;
   }
 }
+

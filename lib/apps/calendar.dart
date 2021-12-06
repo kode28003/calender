@@ -68,7 +68,7 @@ Future InputText(BuildContext context) async{
             },
           ),
           CupertinoDialogAction(
-            child: Text('ok',style: TextStyle(color:Colors.black),),
+            child: Text('OK',style: TextStyle(color:Colors.black),),
             onPressed: () {
               Navigator.pop(context);
             },
