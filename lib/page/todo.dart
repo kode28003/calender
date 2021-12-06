@@ -27,6 +27,9 @@ final list=[
   'いらない物をメルカリで売る',
   'ごみ拾いをする',
   'SDGsについて調べる',
+  '',
+  '',
+  '',
 ];
 
 
@@ -49,9 +52,9 @@ final todoListProvider = StateNotifierProvider<TodoList, List<Todo>>((ref) {
   final iconNumber3=ref.watch(iconCount3Provider);
 
   return TodoList([
-    Todo(id: '1', description: list[1+iconNumber1]),
-    Todo(id: '2', description: list[2+iconNumber2]),
-    Todo(id: '3', description: list[3+iconNumber3]),
+    Todo(id: '1', description: list[iconNumber1]),
+    Todo(id: '2', description: list[iconNumber2]),
+    Todo(id: '3', description: list[iconNumber3]),
   ]);
 });
 
