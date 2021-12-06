@@ -15,7 +15,7 @@ int number=1;
 int? startDay;
 int? endDays;
 String? appointment;
-
+DateTime tapDay=DateTime.now();
 
 final explanation=[
   '2030年までに、現在１日1.25ドル未満で生活する人々と定義されている極度の貧困をあらゆる場所で終わらせる。',
@@ -250,8 +250,8 @@ class Event extends ConsumerWidget {
 }
 
 void calendarTapped(CalendarTapDetails calendarTapDetails) {
+  tapDay=calendarTapDetails.date!;
   startDay=calendarTapDetails.date!.day;
-
 }
 
 Future<void> addEvent() async{

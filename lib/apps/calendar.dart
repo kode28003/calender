@@ -10,7 +10,7 @@ final now = new DateTime.now();
 Future endDay(BuildContext context) async{
   final selectDay=await showDatePicker(
     context: context,
-    initialDate: DateTime.now(),
+    initialDate: tapDay,
     firstDate: DateTime(2021),
     lastDate: DateTime(2022),
     helpText: '予定の終了日時を教えて下さい',
