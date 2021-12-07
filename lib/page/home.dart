@@ -1,4 +1,5 @@
 import 'package:calender/apps/random.dart';
+import 'package:calender/data/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:calender/apps/count.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:calender/page/todo.dart';
 import 'package:calender/apps/calendar.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 CalendarDataSource? _dataSource;
 Appointment? app;
@@ -57,6 +59,7 @@ final num=[
   '１０',
 ];
 
+
 class HomePage extends ConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
   static const String route = '/';
@@ -81,6 +84,7 @@ class HomePage extends ConsumerWidget {
               ),
             onPressed: (){
               Navigator.pushNamed(context, ToDoPage.route);
+              getDate();
             },
           ),
         ),
@@ -282,6 +286,9 @@ Future<void> addEvent() async{
       endTime: endValue!,
       subject: appointment!,
       color: Colors.black54);
+  list.add(event.toString());
+  setDate();
+
   _dataSource!.appointments!.add(event);
   _dataSource!.notifyListeners(
       CalendarDataSourceAction.add, <Appointment>[event!]);

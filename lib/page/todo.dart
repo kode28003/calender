@@ -1,4 +1,5 @@
 import 'package:calender/apps/count.dart';
+import 'package:calender/data/storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -94,7 +95,6 @@ final todoListFilter = StateProvider((_) => TodoListFilter.active);
 final uncompletedTodosCount = Provider<int>((ref) {
   return ref.watch(todoListProvider).where((todo) => !todo.completed).length;
 });
-
 final filteredTodos = Provider<List<Todo>>((ref) {
   final filter = ref.watch(todoListFilter);
   final todos = ref.watch(todoListProvider);
@@ -130,7 +130,6 @@ class ToDoPage extends HookConsumerWidget {
           previousPageTitle: 'Calendar',
           onPressed: (){
             Navigator.pop(context);
-            //ref.read(countUpNotifierProvider).startTimer();
             ref.read(countProvider.state).state+=1;
           },
         ),
@@ -188,18 +187,24 @@ class ToDoPage extends HookConsumerWidget {
               controller: newTodoController,
               onSubmitted: (value){
                 ref.read(todoListProvider.notifier).add(value);
+                todoAddDate.add(value);
+                setDate();
                 newTodoController.clear();
               },
             ),
             const SizedBox(height: 20),
             const Toolbar(),
             if (todos.isNotEmpty) const Divider(height: 0),
-            for (var i = 0; i < todos.length; i++) ...[
+            for (int i = 0; i < todos.length; i++) ...[
               if (i > 0) const Divider(height: 0),
               Dismissible(
                 key: ValueKey(todos[i].id),
                 onDismissed: (_) {
                   ref.read(todoListProvider.notifier).remove(todos[i]);
+                  todoAddDate.remove(i);
+                  todoAddDate.removeRange(0,todoAddDate.length);
+                  setDate();
+                  getDate();
                 },
                 child: ProviderScope(
                   overrides: [
@@ -287,6 +292,7 @@ class Toolbar extends HookConsumerWidget {
               backgroundColor: Colors.brown.shade50,
               onPressed: () {
                 final company=ref.read(updateCompanyProvider.state).state+=1;
+
                 if(company==6){
                   ref.read(updateCompanyProvider.state).state=1;
                 }
@@ -306,11 +312,10 @@ class Toolbar extends HookConsumerWidget {
 
 class Title extends StatelessWidget {
   const Title({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding:  EdgeInsets.fromLTRB(10, 5, 10, 10),
+      padding:  EdgeInsets.fromLTRB(10, 5, 10, 30),
     child: const Text(
       'Monthly To Do List',
       textAlign: TextAlign.center,
@@ -382,6 +387,9 @@ class TodoItem extends HookConsumerWidget {
             color: Colors.black54,
             onPressed: () {
               ref.read(todoListProvider.notifier).counter(todo.id,ref);
+              for(int j=0;j<todoAddDate.length;j++){
+                ref.read(todoListProvider.notifier).add(todoAddDate[j]);
+              }
             },
           ),
         ),
