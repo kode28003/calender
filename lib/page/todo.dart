@@ -186,10 +186,12 @@ class ToDoPage extends HookConsumerWidget {
               placeholder: 'SDGsの取り組みを入力してね',
               controller: newTodoController,
               onSubmitted: (value){
-                ref.read(todoListProvider.notifier).add(value);
-                todoAddDate.add(value);
-                setDate();
-                newTodoController.clear();
+                if(value!='') {
+                  ref.read(todoListProvider.notifier).add(value);
+                  todoAddDate.add(value);
+                  setDate();
+                  newTodoController.clear();
+                }
               },
             ),
             const SizedBox(height: 20),
@@ -201,8 +203,7 @@ class ToDoPage extends HookConsumerWidget {
                 key: ValueKey(todos[i].id),
                 onDismissed: (_) {
                   ref.read(todoListProvider.notifier).remove(todos[i]);
-                  todoAddDate.remove(i);
-                  todoAddDate.removeRange(0,todoAddDate.length);
+                  todoAddDate.removeAt(i-3);
                   setDate();
                   getDate();
                 },
@@ -387,8 +388,10 @@ class TodoItem extends HookConsumerWidget {
             color: Colors.black54,
             onPressed: () {
               ref.read(todoListProvider.notifier).counter(todo.id,ref);
-              for(int j=0;j<todoAddDate.length;j++){
+              if(todo.id=='1' || todo.id=='2' ||todo.id =='3'){
+              for(int j=0;j<todoAddDate.length;j++) {
                 ref.read(todoListProvider.notifier).add(todoAddDate[j]);
+              }
               }
             },
           ),
