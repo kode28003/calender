@@ -45,12 +45,12 @@ final company=[
 
 final companyInformation=[
   '',
-  '2019年、Appleでは1,100万台以上のiPhoneがリサイクルされました。',
-  '米国では、Googleマップで自動車でのルートを検索すると、燃料効率のいいルートを提案されます。',
-  'カンボジアで、子どもが売られない仕組みを作るために、最貧困層の女性向けの雇用の支援を行っています。',
-  '世界各国のジェンダー平等の取り組みが優れている企業に贈られる「2020年男女平等指数」に選ばれました。',
-  '女性が活躍し働きやすい環境づくりとして、ヤクルトレディのお子さんをお預かりする保育所を運営しています。',
-  '電気自動車をより早く普及させるため、車両電動化技術の特許を無償で共有しています。',
+  '　2019年、Appleでは1,100万台以上のiPhoneがリサイクルされました。',
+  '　米国では、Googleマップで自動車でのルートを検索すると、燃料効率のいいルートを提案されます。',
+  '　カンボジアで、子どもが売られない仕組みを作るために、最貧困層の女性向けの雇用の支援を行っています。',
+  '　世界各国のジェンダー平等の取り組みが優れている企業に贈られる「2020年男女平等指数」に選ばれました。',
+  '　女性が活躍し働きやすい環境づくりとして、ヤクルトレディのお子さんをお預かりする保育所を運営しています。',
+  '　電気自動車をより早く普及させるため、車両電動化技術の特許を無償で共有しています。',
 ];
 
 
@@ -138,15 +138,17 @@ class ToDoPage extends HookConsumerWidget {
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 18),
           children: [
-            const Title(),
             Container(
-                padding: EdgeInsets.fromLTRB(10, 10, 5, 2),
+              foregroundDecoration: BoxDecoration(
+               borderRadius: BorderRadius.circular(8.0),
+              ),
+                padding: EdgeInsets.fromLTRB(10, 0, 5, 0),
                 child: RichText(
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   text: TextSpan(
-                    text: '企業の取り組み：${company[companyNum]}',
+                    text: '企業の取り組み：「${company[companyNum]}」',
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.black,
@@ -157,7 +159,7 @@ class ToDoPage extends HookConsumerWidget {
                 ),
               ),
               Container(
-                padding: EdgeInsets.fromLTRB(8, 10, 5, 15),
+                padding: EdgeInsets.fromLTRB(8, 5, 5, 7),
                 child: RichText(
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
@@ -166,13 +168,21 @@ class ToDoPage extends HookConsumerWidget {
                     text: companyInformation[companyNum],
                     style: TextStyle(
                       fontSize: 18,
-                      color: Colors.black,
+                      color: Colors.black87,
                       decorationThickness: 3,
                     ),
                   ),
                 ),
               ),
+            new Divider(
+                color: Colors.black
+            ),
+            const Title(),
             CupertinoTextField(
+              decoration: BoxDecoration(
+               borderRadius: BorderRadius.circular(8.0),
+                color: Colors.white,
+                ),
               key: addTodoKey,
               placeholder: 'SDGsの取り組みを入力してね',
               controller: newTodoController,
@@ -300,7 +310,7 @@ class Title extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding:  EdgeInsets.fromLTRB(10, 1, 10, 5),
+      padding:  EdgeInsets.fromLTRB(10, 5, 10, 10),
     child: const Text(
       'Monthly To Do List',
       textAlign: TextAlign.center,

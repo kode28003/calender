@@ -49,8 +49,8 @@ Future InputText(BuildContext context) async{
     builder: (context) {
       return Theme(
         data: ThemeData(
-            dialogBackgroundColor: Colors.brown.shade50,
-            dialogTheme: DialogTheme(backgroundColor: Colors.brown.shade50)),
+        dialogBackgroundColor: Colors.brown.shade50,
+        dialogTheme: DialogTheme(backgroundColor: Colors.brown.shade50)),
         child: CupertinoAlertDialog(
         title: Text('予定を入力してください'+'\n',),
         content: CupertinoTextField(

@@ -74,7 +74,11 @@ class HomePage extends ConsumerWidget {
           backgroundColor: Colors.brown.shade50,
           trailing: CupertinoButton(
             padding: EdgeInsets.fromLTRB(90, 0, 10, 5),
-            child: Icon(CupertinoIcons.forward,color: Colors.black,size:30,),
+            child: Icon(
+              CupertinoIcons.forward,
+              color: Colors.black,
+              size:30,
+              ),
             onPressed: (){
               Navigator.pushNamed(context, ToDoPage.route);
             },
@@ -197,7 +201,7 @@ class HomePage extends ConsumerWidget {
                 text:status[number],
                   style: TextStyle(
                       fontSize: 16,
-                      color: Colors.black54
+                      color: Colors.black87
                   ),
                 ),
               ),
@@ -229,7 +233,7 @@ class Event extends ConsumerWidget {
     return Align(
       alignment: Alignment.center,
       child:Container(
-        height: 390,
+        height: 350,
         child:SfCalendar(
           todayHighlightColor: Colors.black54,
           cellBorderColor: Colors.black38,
