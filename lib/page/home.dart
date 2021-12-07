@@ -66,7 +66,7 @@ class HomePage extends ConsumerWidget {
     _dataSource = _getDataSource();
     final random=ref.watch(randomProvider);
     ref.watch(countProvider);
-    number=random.nextInt(10);//0~9までのrandom
+    number=random.nextInt(6);//0~6までのrandom
 
     return CupertinoPageScaffold(
       backgroundColor: Colors.brown.shade50,
@@ -206,6 +206,17 @@ class HomePage extends ConsumerWidget {
                 ),
               ),
             ),
+              Positioned(
+                bottom: 110,
+                left: 260,
+                child:Image.asset(
+                  'image/'+(number+1).toString()+(number+1).toString()+'.png',
+                  width: 120,
+                  height: 70,
+                  colorBlendMode: BlendMode.srcOver,
+                  color: Colors.brown.shade50.withOpacity(0.2),
+                ),
+              ),
           ],
       ),
     );
