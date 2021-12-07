@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:calender/apps/random.dart';
 import 'package:calender/data/storage.dart';
 import 'package:flutter/material.dart';
@@ -286,8 +288,13 @@ Future<void> addEvent() async{
       endTime: endValue!,
       subject: appointment!,
       color: Colors.black54);
-  list.add(event.toString());
-  setDate();
+
+  final allEventList=jsonEncode({
+      'startTime': startValue!.toString(),
+      'endTime'  : endValue!.toString(),
+      'subject'  : appointment!,
+  });
+  setAllEvent(allEventList);
 
   _dataSource!.appointments!.add(event);
   _dataSource!.notifyListeners(

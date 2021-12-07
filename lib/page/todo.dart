@@ -293,7 +293,6 @@ class Toolbar extends HookConsumerWidget {
               backgroundColor: Colors.brown.shade50,
               onPressed: () {
                 final company=ref.read(updateCompanyProvider.state).state+=1;
-
                 if(company==6){
                   ref.read(updateCompanyProvider.state).state=1;
                 }
