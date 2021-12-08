@@ -125,13 +125,18 @@ class ToDoPage extends HookConsumerWidget {
         backgroundColor: Colors.brown.shade50,
       navigationBar: new CupertinoNavigationBar(
         backgroundColor: Colors.brown.shade50,
-        leading: CupertinoNavigationBarBackButton(
-          color: Colors.black,
-          previousPageTitle: 'Calendar',
+       middle: const Text('SDGs To Do List'),
+       leading: CupertinoButton(
+         padding: EdgeInsets.fromLTRB(0, 6, 10, 5),
           onPressed: (){
             Navigator.pop(context);
             ref.read(countProvider.state).state+=1;
           },
+            child: Icon(
+          CupertinoIcons.back,
+          color: Colors.black,
+          size:30,
+        ),
         ),
       ),
         child: ListView(

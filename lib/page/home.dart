@@ -22,6 +22,7 @@ int? startDay;
 int? endDays;
 String? appointment;
 DateTime tapDay=DateTime.now();
+int eventCounter=0;
 
 final explanation=[
   '2030年までに、現在１日1.25ドル未満で生活する人々と定義されている極度の貧困をあらゆる場所で終わらせる。',
@@ -73,13 +74,15 @@ class HomePage extends ConsumerWidget {
     final random=ref.watch(randomProvider);
     ref.watch(countProvider);
     number=random.nextInt(6);//0~6までのrandom
+    //a();
 
     return CupertinoPageScaffold(
       backgroundColor: Colors.brown.shade50,
         navigationBar: new CupertinoNavigationBar(
           backgroundColor: Colors.brown.shade50,
+            middle:const Text('SDGs Calendar'),
           trailing: CupertinoButton(
-            padding: EdgeInsets.fromLTRB(90, 0, 10, 5),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
             child: Icon(
               CupertinoIcons.forward,
               color: Colors.black,
@@ -148,9 +151,8 @@ class HomePage extends ConsumerWidget {
                   padding: EdgeInsets.all(3),
                   child:FloatingActionButton(
                   backgroundColor: Colors.brown.shade50,
-                  onPressed: () {
+                  onPressed: () async{
                     ref.read(countProvider.state).state+=1;
-                    //getAllEvent();
                   },
                   child: const Icon(
                       Icons.refresh,
@@ -170,13 +172,12 @@ class HomePage extends ConsumerWidget {
                   backgroundColor: Colors.brown.shade50,
                   foregroundColor: Colors.black54,
                   onPressed: () async{
-                    ref.read(eventCountProvider.state).state+=1;
                     await InputText(context);
                     if(appointment!=null) {
                       await endDay(context);
                       await startTimes(context);
                       await endTimes(context);
-                      await addEvent(ref);
+                      await addEvent();
                     }
                   },
                   child: const Icon(Icons.add),
@@ -285,21 +286,20 @@ void calendarTapped(CalendarTapDetails calendarTapDetails) {
   startDay=calendarTapDetails.date!.day;
 }
 
-Future<void> addEvent(WidgetRef ref) async{
-  final eventCount=ref.read(eventCountProvider);
+Future<void> addEvent() async{
   event = Appointment(
       startTime: startValue!,
       endTime: endValue!,
       subject: appointment!,
       color: Colors.black54);
 
-  // final singleEvent=jsonEncode({
-  //     'startTime': startValue!.toString(),
-  //     'endTime'  : endValue!.toString(),
-  //     'subject'  : appointment!,
-  // });
-  // allEventList[eventCount]=singleEvent;
-  // setAllEvent();
+
+  // allEventList.add(EventModel(
+  //   startTime: startValue!.toString(),
+  //   endTime: endValue!.toString(),
+  //   subject: appointment!,
+  // ));
+  //await setAllEvent();
 
   _dataSource!.appointments!.add(event);
   _dataSource!.notifyListeners(
@@ -307,23 +307,11 @@ Future<void> addEvent(WidgetRef ref) async{
   appointment=null;
 }
 
-Future<void> convertAndAdd() async{
-  for(int i=0;i<allEventList.length;i++) {
-    final getDate = jsonDecode(allEventList[i]);
-    DateTime? a=getDate('startTime');
-    print(a.toString());
-
-    Appointment? getEvent = Appointment(
-        startTime: startValue!,
-        endTime: endValue!,
-        subject: appointment!,
-        color: Colors.black54);
-
-
-    // _dataSource!.appointments!.add(getEvent);
-    // _dataSource!.notifyListeners(
-    //     CalendarDataSourceAction.add, <Appointment>[getEvent!]);
-  }
+Future<void> a()async {
+  _dataSource!.appointments!.add(event);
+  _dataSource!.notifyListeners(
+      CalendarDataSourceAction.add, <Appointment>[event!]);
+  appointment=null;
 }
 
 
@@ -352,4 +340,5 @@ class _DataSource extends CalendarDataSource {
     appointments = source;
   }
 }
+
 

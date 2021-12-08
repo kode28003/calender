@@ -6,9 +6,6 @@ final countProvider=StateProvider((ref){
   return 0;
 });
 
-final eventCountProvider=StateProvider((ref){
-  return 0;
-});
 
 final countUpNotifierProvider=
     ChangeNotifierProvider((ref)=>CountUpNotifier());
