@@ -12,6 +12,7 @@ import 'package:calender/page/todo.dart';
 import 'package:calender/apps/calendar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:calender/data/storage.dart';
 
 CalendarDataSource? _dataSource;
 Appointment? app;
@@ -149,6 +150,7 @@ class HomePage extends ConsumerWidget {
                   backgroundColor: Colors.brown.shade50,
                   onPressed: () {
                     ref.read(countProvider.state).state+=1;
+                    //getAllEvent();
                   },
                   child: const Icon(
                       Icons.refresh,
@@ -168,12 +170,13 @@ class HomePage extends ConsumerWidget {
                   backgroundColor: Colors.brown.shade50,
                   foregroundColor: Colors.black54,
                   onPressed: () async{
+                    ref.read(eventCountProvider.state).state+=1;
                     await InputText(context);
                     if(appointment!=null) {
                       await endDay(context);
                       await startTimes(context);
                       await endTimes(context);
-                      await addEvent();
+                      await addEvent(ref);
                     }
                   },
                   child: const Icon(Icons.add),
@@ -282,25 +285,47 @@ void calendarTapped(CalendarTapDetails calendarTapDetails) {
   startDay=calendarTapDetails.date!.day;
 }
 
-Future<void> addEvent() async{
+Future<void> addEvent(WidgetRef ref) async{
+  final eventCount=ref.read(eventCountProvider);
   event = Appointment(
       startTime: startValue!,
       endTime: endValue!,
       subject: appointment!,
       color: Colors.black54);
 
-  final allEventList=jsonEncode({
-      'startTime': startValue!.toString(),
-      'endTime'  : endValue!.toString(),
-      'subject'  : appointment!,
-  });
-  setAllEvent(allEventList);
+  // final singleEvent=jsonEncode({
+  //     'startTime': startValue!.toString(),
+  //     'endTime'  : endValue!.toString(),
+  //     'subject'  : appointment!,
+  // });
+  // allEventList[eventCount]=singleEvent;
+  // setAllEvent();
 
   _dataSource!.appointments!.add(event);
   _dataSource!.notifyListeners(
       CalendarDataSourceAction.add, <Appointment>[event!]);
   appointment=null;
 }
+
+Future<void> convertAndAdd() async{
+  for(int i=0;i<allEventList.length;i++) {
+    final getDate = jsonDecode(allEventList[i]);
+    DateTime? a=getDate('startTime');
+    print(a.toString());
+
+    Appointment? getEvent = Appointment(
+        startTime: startValue!,
+        endTime: endValue!,
+        subject: appointment!,
+        color: Colors.black54);
+
+
+    // _dataSource!.appointments!.add(getEvent);
+    // _dataSource!.notifyListeners(
+    //     CalendarDataSourceAction.add, <Appointment>[getEvent!]);
+  }
+}
+
 
 _DataSource _getDataSource() {
   List<Appointment> appointments = <Appointment>[];

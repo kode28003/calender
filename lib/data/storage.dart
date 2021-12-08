@@ -6,6 +6,7 @@ import 'package:calender/page/home.dart';
 Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
 List <String> todoAddDate=[];
+List <String> allEventList=[];
 
 Future<String?> setDate() async {
   SharedPreferences prefs = await _prefs;
@@ -26,15 +27,16 @@ Future<String?> removeDate() async {
   prefs.remove('todoDate');
 }
 
-Future<String?> setAllEvent(String allEventList) async {
+Future<String?> setAllEvent() async {
   SharedPreferences prefs = await _prefs;
-  prefs.setString('AllEvent', allEventList);
+  prefs.setStringList('AllEvent', allEventList);
   print('イベントを保存しました');
 }
 
 Future<String?> getAllEvent() async {
   SharedPreferences prefs = await _prefs;
-  final storageAllEvent =jsonEncode(prefs.getString('AllEvent')!);
+  allEventList.clear();
+  final storageAllEvent =jsonEncode(prefs.getStringList('AllEvent')!);
   print('イベントを取得しました');
   print(storageAllEvent);
 }
