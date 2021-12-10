@@ -1,8 +1,5 @@
 import 'dart:convert';
 
-import 'package:calender/apps/calendar.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:calender/page/home.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -31,6 +28,8 @@ Future<String?> removeDate() async {
   prefs.remove('todoDate');
 }
 
+
+
 Future<String?> setAllEvent() async {
   SharedPreferences prefs = await _prefs;
 
@@ -43,22 +42,15 @@ Future<String?> setAllEvent() async {
 Future<Appointment?> getAllEvent() async {
   SharedPreferences prefs = await _prefs;
   allEventList.clear();
-  var result = prefs.getStringList('eventString');
-  print('result:$result');
+  result = prefs.getStringList('AllEvent');
 
   // 読み出し確認
   if (result != null) {
     allEventList =
         result.map((f) => EventModel.fromJson(json.decode(f))).toList();
+    print(allEventList);
   } else {
   }
-  startValue=DateTime.parse(allEventList[0].startTime);
-  endValue=DateTime.parse(allEventList[0].endTime);
-  event = Appointment(
-      startTime: startValue!,
-      endTime: endValue!,
-      subject: appointment!,
-      color: Colors.black54);
 }
 
 Future<String?> removeAllEvent() async {
@@ -67,7 +59,7 @@ Future<String?> removeAllEvent() async {
 }
 
 class EventModel {
-  final String startTime;
+  String startTime;
   String endTime;
   String subject;
 

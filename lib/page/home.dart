@@ -23,6 +23,8 @@ int? endDays;
 String? appointment;
 DateTime tapDay=DateTime.now();
 int eventCounter=0;
+var result;
+
 
 final explanation=[
   '2030年までに、現在１日1.25ドル未満で生活する人々と定義されている極度の貧困をあらゆる場所で終わらせる。',
@@ -74,7 +76,7 @@ class HomePage extends ConsumerWidget {
     final random=ref.watch(randomProvider);
     ref.watch(countProvider);
     number=random.nextInt(6);//0~6までのrandom
-    //a();
+    addStorageEvent();
 
     return CupertinoPageScaffold(
       backgroundColor: Colors.brown.shade50,
@@ -294,12 +296,12 @@ Future<void> addEvent() async{
       color: Colors.black54);
 
 
-  // allEventList.add(EventModel(
-  //   startTime: startValue!.toString(),
-  //   endTime: endValue!.toString(),
-  //   subject: appointment!,
-  // ));
-  //await setAllEvent();
+  allEventList=[EventModel(
+    startTime: startValue!.toString(),
+    endTime: endValue!.toString(),
+    subject: appointment!,
+  )];
+  await setAllEvent();
 
   _dataSource!.appointments!.add(event);
   _dataSource!.notifyListeners(
@@ -307,11 +309,20 @@ Future<void> addEvent() async{
   appointment=null;
 }
 
-Future<void> a()async {
-  _dataSource!.appointments!.add(event);
-  _dataSource!.notifyListeners(
-      CalendarDataSourceAction.add, <Appointment>[event!]);
-  appointment=null;
+Future<void> addStorageEvent()async {
+    getAllEvent();
+    startValue = DateTime.parse(allEventList[0].startTime);
+    endValue = DateTime.parse(allEventList[0].endTime);
+    appointment = allEventList[0].subject;
+    event = Appointment(
+        startTime: startValue!,
+        endTime: endValue!,
+        subject: appointment!,
+        color: Colors.black54);
+    _dataSource!.appointments!.add(event);
+    _dataSource!.notifyListeners(
+        CalendarDataSourceAction.add, <Appointment>[event!]);
+    //appointment=null;
 }
 
 
@@ -320,7 +331,7 @@ _DataSource _getDataSource() {
   appointments.add(Appointment(
     startTime: DateTime.now(),
     endTime: DateTime.now().add(const Duration(hours: 1)),
-    subject: 'Meeting',
+    subject: '信州アプリコンテスト',
     color: Colors.black54,
   ));
   return _DataSource(appointments);

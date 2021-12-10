@@ -19,7 +19,7 @@ class MyApp extends ConsumerWidget {
       title: 'SDGs App',
       theme: ThemeData.light().copyWith(
         colorScheme: ColorScheme.light().copyWith(
-          primary: Colors.brown.shade200,
+          primary: Colors.brown.shade300,
         )
       ),
         home: const HomePage(),
