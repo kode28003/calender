@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:flutter/cupertino.dart';
 
+int? startDay;
+int? endDays;
 DateTime? startValue;
 DateTime? endValue;
 final now = new DateTime.now();
 
-Future endDay(BuildContext context) async{
-  final selectDay=await showDatePicker(
+Future endDayset(BuildContext context) async{
+  DateTime? selectDay=await showDatePicker( //これが動かん
     context: context,
     initialDate: tapDay,
     firstDate: DateTime(2021),
@@ -16,6 +18,7 @@ Future endDay(BuildContext context) async{
     helpText: '予定の終了日時を教えて下さい',
   );
   if(selectDay!=null){
+    print("入ってるけどね");
     endDays=selectDay.day;
   }
 }
@@ -38,7 +41,7 @@ Future endTimes(BuildContext context) async{
     helpText: '終了時刻を入力してください',
   );
   if(select !=null){
-    endValue = DateTime(now.year,now.month,endDays!,select.hour,select.minute);
+    endValue = DateTime(now.year,now.month,startDay!,select.hour,select.minute);
   }
 }
 
@@ -49,32 +52,32 @@ Future InputText(BuildContext context) async{
     builder: (context) {
       return Theme(
         data: ThemeData(
-        dialogBackgroundColor: Colors.brown.shade50,
-        dialogTheme: DialogTheme(backgroundColor: Colors.brown.shade50)),
+            dialogBackgroundColor: Colors.brown.shade50,
+            dialogTheme: DialogTheme(backgroundColor: Colors.brown.shade50)),
         child: CupertinoAlertDialog(
-        title: Text('予定を入力してください'+'\n',),
-        content: CupertinoTextField(
-          cursorColor: Colors.brown.shade50,
-          onChanged: (value){
-            appointment=value;
-          },
+          title: Text('予定を入力してください'+'\n',),
+          content: CupertinoTextField(
+            cursorColor: Colors.brown.shade50,
+            onChanged: (value){
+              appointment=value;
+            },
+          ),
+          actions: [
+            CupertinoDialogAction(
+              child: Text('Cancel',style: TextStyle(color:Colors.black),),
+              onPressed: () {
+                Navigator.pop(context);
+                appointment=null;
+              },
+            ),
+            CupertinoDialogAction(
+              child: Text('OK',style: TextStyle(color:Colors.black),),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
         ),
-        actions: [
-          CupertinoDialogAction(
-            child: Text('Cancel',style: TextStyle(color:Colors.black),),
-            onPressed: () {
-              Navigator.pop(context);
-              appointment=null;
-            },
-          ),
-          CupertinoDialogAction(
-            child: Text('OK',style: TextStyle(color:Colors.black),),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      ),
       );
     },
   );

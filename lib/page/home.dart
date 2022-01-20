@@ -18,8 +18,6 @@ CalendarDataSource? _dataSource;
 Appointment? app;
 Appointment? event;
 int number=1;
-int? startDay;
-int? endDays;
 String? appointment;
 DateTime tapDay=DateTime.now();
 int eventCounter=0;
@@ -176,7 +174,7 @@ class HomePage extends ConsumerWidget {
                   onPressed: () async{
                     await InputText(context);
                     if(appointment!=null) {
-                      await endDay(context);
+                      //await endDay(context);
                       await startTimes(context);
                       await endTimes(context);
                       await addEvent();
