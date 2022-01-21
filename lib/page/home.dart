@@ -13,6 +13,7 @@ import 'package:calender/apps/calendar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:calender/data/storage.dart';
+import 'package:calender/apps/firestore.dart';
 
 CalendarDataSource? _dataSource;
 Appointment? app;
@@ -153,6 +154,7 @@ class HomePage extends ConsumerWidget {
                   backgroundColor: Colors.brown.shade50,
                   onPressed: () async{
                     ref.read(countProvider.state).state+=1;
+                    //Firestore.add();
                   },
                   child: const Icon(
                       Icons.refresh,

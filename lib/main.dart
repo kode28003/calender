@@ -4,11 +4,19 @@ import 'package:calender/page/home.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:calender/page/top.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
+// void main() {
+//   runApp(const ProviderScope(child: MyApp()));
+// }
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();//Firebaseを初期化する前に必須なコード
+  await Firebase.initializeApp();
   runApp(const ProviderScope(child: MyApp()));
 }
+
 
 class MyApp extends ConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
