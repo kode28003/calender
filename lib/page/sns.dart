@@ -72,6 +72,9 @@ class SnsPage extends ConsumerWidget {
                         index < ChatMessageModel.dummyData.length;
                         index++)
                       Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9)
+                        ),
                         margin: ChatMessageModel.dummyData[index].isMine
                             ? EdgeInsets.only(
                                 top: 5.0, left: 90.0, bottom: 5.0, right: 8.0)
@@ -102,7 +105,7 @@ class SnsPage extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 new Container(
-                    color: Colors.green[100],
+                    color: Colors.black54,
                     child: Column(children: [
                       Form(
                           key: _formKey,
@@ -111,12 +114,16 @@ class SnsPage extends ConsumerWidget {
                               children: [
                                 Flexible(
                                     child: TextFormField(
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
                                   controller: messageTextInputCtl,
                                   keyboardType: TextInputType.multiline,
-                                  maxLines: 5,
+                                  maxLines: 3,
                                   minLines: 1,
                                   decoration: const InputDecoration(
                                     hintText: 'メッセージを入力してください',
+                                    hintStyle: TextStyle(color: Colors.white),
                                   ),
                                   onTap: () {
                                     // タイマーを入れてキーボード分スクロールする様に
@@ -127,19 +134,22 @@ class SnsPage extends ConsumerWidget {
                                   },
                                 )),
                                 Material(
-                                  color: Colors.green[100],
+                                  color: Colors.black12,
                                   child: Center(
                                     child: Ink(
                                       decoration: const ShapeDecoration(
-                                        color: Colors.green,
+                                        color: Colors.black54,
                                         shape: CircleBorder(),
                                       ),
                                       child: IconButton(
                                         icon: Icon(Icons.send),
                                         color: Colors.white,
                                         onPressed: () {
-                                          addMessage(messageTextInputCtl.text);
-                                          FocusScope.of(context).unfocus();
+                                          if(messageTextInputCtl.value.isComposingRangeValid==true) {
+                                            addMessage(
+                                                messageTextInputCtl.text);
+                                          }
+                                            FocusScope.of(context).unfocus();
                                           messageTextInputCtl.clear();
                                           Timer(
                                             Duration(milliseconds: 200),
