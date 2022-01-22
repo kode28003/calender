@@ -9,6 +9,7 @@ import 'dart:async';
 import 'package:calender/apps/message.dart';
 
 ScrollController _scrollController = ScrollController();
+final messageTextInputCtl = TextEditingController();
 BuildContext? context1;
 
 class SnsPage extends ConsumerWidget {
@@ -26,10 +27,7 @@ class SnsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final messageTextInputCtl = TextEditingController();
-    final _formKey = GlobalKey();
     context1 = context;
-
     return Material(
       child: CupertinoPageScaffold(
         backgroundColor: Colors.brown.shade50,
@@ -44,7 +42,7 @@ class SnsPage extends ConsumerWidget {
               size: 30,
             ),
             onPressed: () {
-              Navigator.pushNamed(context, ToDoPage.route);
+              Navigator.pushNamed(context, HomePage.route);
             },
           ),
           trailing: CupertinoButton(
@@ -55,7 +53,7 @@ class SnsPage extends ConsumerWidget {
               size: 30,
             ),
             onPressed: () {
-              Navigator.pushNamed(context, HomePage.route);
+              Navigator.pushNamed(context, ToDoPage.route);
             },
           ),
         ),
@@ -108,7 +106,8 @@ class SnsPage extends ConsumerWidget {
                     color: Colors.black54,
                     child: Column(children: [
                       Form(
-                          key: _formKey,
+                          //key: _formKey,
+                          key: key,
                           child: Row(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
@@ -131,6 +130,7 @@ class SnsPage extends ConsumerWidget {
                                       Duration(milliseconds: 200),
                                       scrollToBottom,
                                     );
+                                    context1 = context;
                                   },
                                 )),
                                 Material(

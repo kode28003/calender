@@ -19,14 +19,13 @@ import 'package:calender/apps/firestore.dart';
 CalendarDataSource? _dataSource;
 Appointment? app;
 Appointment? event;
-int number=1;
+int number = 1;
 String? appointment;
-DateTime tapDay=DateTime.now();
-int eventCounter=0;
+DateTime tapDay = DateTime.now();
+int eventCounter = 0;
 var result;
 
-
-final explanation=[
+final explanation = [
   '2030年までに、現在１日1.25ドル未満で生活する人々と定義されている極度の貧困をあらゆる場所で終わらせる。',
   '2030年までに、飢餓を撲滅し、全ての人々が一年中安全かつ栄養のある食料を十分得られるようにする。',
   '2030年までに、世界の妊産婦の死亡率を出生10万人当たり70人未満に削減する。',
@@ -39,7 +38,7 @@ final explanation=[
   '2030年までに、各国の所得下位40%の所得成長率について、国内平均を上回る数値を漸進的に達成し、持続させる。',
 ];
 
-final status=[
+final status = [
   ' 世界では、6人に1人（3億5600万人）の子どもたちが、「極度にまずしい」暮らしをしています。',
   ' 明日以降も食べ物を得られるか分からない状態の人が世界人口の10%もいます。',
   ' サハラ以南のアフリカ地域では、2人に1人の　　子どもが風邪で肺炎になっても治療を受けられません。',
@@ -52,7 +51,7 @@ final status=[
   ' 2017年には、世界の最も豊かな1%の人が世界全体の富の約33%を持っていました。',
 ];
 
-final num=[
+final num = [
   '１',
   '２',
   '３',
@@ -65,218 +64,226 @@ final num=[
   '１０',
 ];
 
-
 class HomePage extends ConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
   static const String route = '/';
 
   @override
-  Widget build(BuildContext context,WidgetRef ref){
+  Widget build(BuildContext context, WidgetRef ref) {
     _dataSource = _getDataSource();
-    final random=ref.watch(randomProvider);
+    final random = ref.watch(randomProvider);
     ref.watch(countProvider);
-    number=random.nextInt(6);//0~6までのrandom
+    number = random.nextInt(6); //0~6までのrandom
     addStorageEvent();
 
     return CupertinoPageScaffold(
       backgroundColor: Colors.brown.shade50,
-        navigationBar: new CupertinoNavigationBar(
-          backgroundColor: Colors.brown.shade50,
-            middle:const Text('SDGs Calendar'),
-          trailing: CupertinoButton(
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-            child: Icon(
-              CupertinoIcons.forward,
-              color: Colors.black,
-              size:30,
-              ),
-            onPressed: (){
-              Navigator.pushNamed(context, ToDoPage.route);
-              getDate();
-            },
+      navigationBar: new CupertinoNavigationBar(
+        backgroundColor: Colors.brown.shade50,
+        middle: const Text('SDGs Calendar'),
+        trailing: CupertinoButton(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+          child: Icon(
+            CupertinoIcons.forward,
+            color: Colors.black,
+            size: 30,
           ),
-          leading: CupertinoButton(
-            padding: EdgeInsets.fromLTRB(0, 6, 10, 5),
-            onPressed: () {
-              Navigator.pushNamed(context, SnsPage.route);
-              ref.read(countProvider.state).state += 1;
-            },
-            child: Icon(
-              CupertinoIcons.back,
-              color: Colors.black,
-              size: 30,
-            ),
+          onPressed: () {
+            Navigator.pushNamed(context, ToDoPage.route);
+            getDate();
+          },
+        ),
+        leading: CupertinoButton(
+          padding: EdgeInsets.fromLTRB(0, 6, 10, 5),
+          onPressed: () {
+            Navigator.pushNamed(context, SnsPage.route);
+            ref.read(countProvider.state).state += 1;
+          },
+          child: Icon(
+            CupertinoIcons.back,
+            color: Colors.black,
+            size: 30,
           ),
         ),
-        child: Stack(
-            children: [
-                Positioned(
-                  //alignment: Alignment.topLeft,
-                  top: -8,
-                  right: 200,
-                  child:SizedBox(
-                  height: 85,
-                  child: CupertinoButton(
-                  onPressed: () {
-                    showCupertinoDialog<void>(
-                        //barrierColor: background(number)!.withOpacity(0.3),
-                        barrierDismissible: true,
-                        context: context,
-                        builder: (BuildContext context) => Theme(
-                          data: ThemeData(
-                              dialogBackgroundColor: Colors.brown.shade50,
-                              dialogTheme: DialogTheme(backgroundColor: Colors.brown.shade50)),
-                          child: CupertinoAlertDialog(
-                          title:  Text("目標 "+(number+1).toString()+" の具体例"),
-                          content: Text("\n"+explanation[number]),
-                          actions: <CupertinoDialogAction>[
-                            CupertinoDialogAction(
-                              child: const Text("Cancel",
-                                style: TextStyle(color:Colors.black),
-                              ),
-                              onPressed: () => Navigator.pop(context),
+      ),
+      child: Stack(
+        children: [
+          Positioned(
+            //alignment: Alignment.topLeft,
+            top: -8,
+            right: 200,
+            child: SizedBox(
+              height: 85,
+              child: CupertinoButton(
+                onPressed: () {
+                  showCupertinoDialog<void>(
+                      //barrierColor: background(number)!.withOpacity(0.3),
+                      barrierDismissible: true,
+                      context: context,
+                      builder: (BuildContext context) => Theme(
+                            data: ThemeData(
+                                dialogBackgroundColor: Colors.brown.shade50,
+                                dialogTheme: DialogTheme(
+                                    backgroundColor: Colors.brown.shade50)),
+                            child: CupertinoAlertDialog(
+                              title: Text(
+                                  "目標 " + (number + 1).toString() + " の具体例"),
+                              content: Text("\n" + explanation[number]),
+                              actions: <CupertinoDialogAction>[
+                                CupertinoDialogAction(
+                                  child: const Text(
+                                    "Cancel",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  onPressed: () => Navigator.pop(context),
+                                ),
+                                CupertinoDialogAction(
+                                  child: Text(
+                                    '詳しく ↗',
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    launchURL();
+                                  },
+                                ),
+                              ],
                             ),
-                            CupertinoDialogAction(
-                              child: Text('詳しく ↗',style: TextStyle(color:Colors.black),),
-                              onPressed: () {
-                              Navigator.pop(context);
-                              launchURL();
-                            },
-                            ),
-                          ],
-                        ),)
-                  );
+                          ));
                 },
-                  child:Image.asset(
-                    'image/'+(number+1).toString()+'.jpg',
-                    width: 150,
-                    height: 100,
-                    colorBlendMode: BlendMode.srcOver,
-                    color: Colors.brown.shade50.withOpacity(0.2),
-                  ),
-              ),
-            ),
-                ),
-                Positioned(
-                  top: 0,
-                  left: 300,
-                  child:Container(
-                  width: 53,
-                  padding: EdgeInsets.all(3),
-                  child:FloatingActionButton(
-                  backgroundColor: Colors.brown.shade50,
-                  onPressed: () async{
-                    ref.read(countProvider.state).state+=1;
-                    //Firestore.add();
-                  },
-                  child: const Icon(
-                      Icons.refresh,
-                      size: 36,
-                      color: Colors.black54,
-                      ),
-                    ),
-                  ),
-                ),
-              Event(),
-              Positioned(
-                bottom: 7,
-                right: 8,
-                child:Container(
-                  width: 50,
-                child:FloatingActionButton(
-                  backgroundColor: Colors.brown.shade50,
-                  foregroundColor: Colors.black54,
-                  onPressed: () async{
-                    await InputText(context);
-                    if(appointment!=null) {
-                      //await endDay(context);
-                      await startTimes(context);
-                      await endTimes(context);
-                      await addEvent();
-                    }
-                  },
-                  child: const Icon(Icons.add),
-                ),
-              ),
-              ),
-              Container(
-                padding: EdgeInsets.fromLTRB(8,383,2,2),
-                child:RichText(
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  text:TextSpan(
-                    text:'目標'+(num[number])+'の現状',
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black ,
-                        decoration: TextDecoration.underline,
-                      decorationThickness: 3,
-                    ),
-                  ),
-                ),
-              ),
-               Container(
-               padding: EdgeInsets.fromLTRB(4,415,2,2),
-               child:RichText(
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 3,
-                text:TextSpan(
-                text:status[number],
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black87
-                  ),
-                ),
-              ),
-            ),
-              Positioned(
-                bottom: 110,
-                left: 260,
-                child:Image.asset(
-                  'image/'+(number+1).toString()+(number+1).toString()+'.png',
-                  width: 120,
-                  height: 70,
+                child: Image.asset(
+                  'image/' + (number + 1).toString() + '.jpg',
+                  width: 150,
+                  height: 100,
                   colorBlendMode: BlendMode.srcOver,
                   color: Colors.brown.shade50.withOpacity(0.2),
                 ),
               ),
-          ],
+            ),
+          ),
+          Positioned(
+            top: 0,
+            left: 300,
+            child: Container(
+              width: 53,
+              padding: EdgeInsets.all(3),
+              child: FloatingActionButton(
+                backgroundColor: Colors.brown.shade50,
+                onPressed: () async {
+                  ref.read(countProvider.state).state += 1;
+                  //Firestore.add();
+                },
+                child: const Icon(
+                  Icons.refresh,
+                  size: 36,
+                  color: Colors.black54,
+                ),
+              ),
+            ),
+          ),
+          Event(),
+          Positioned(
+            bottom: 7,
+            right: 8,
+            child: Container(
+              width: 50,
+              child: FloatingActionButton(
+                backgroundColor: Colors.brown.shade50,
+                foregroundColor: Colors.black54,
+                onPressed: () async {
+                  await InputText(context);
+                  if (appointment != null) {
+                    //await endDay(context);
+                    await startTimes(context);
+                    await endTimes(context);
+                    await addEvent();
+                  }
+                },
+                child: const Icon(Icons.add),
+              ),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(8, 383, 2, 2),
+            child: RichText(
+              softWrap: true,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              text: TextSpan(
+                text: '目標' + (num[number]) + 'の現状',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                  decoration: TextDecoration.underline,
+                  decorationThickness: 3,
+                ),
+              ),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(4, 415, 2, 2),
+            child: RichText(
+              softWrap: true,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 3,
+              text: TextSpan(
+                text: status[number],
+                style: TextStyle(fontSize: 16, color: Colors.black87),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 110,
+            left: 260,
+            child: Image.asset(
+              'image/' +
+                  (number + 1).toString() +
+                  (number + 1).toString() +
+                  '.png',
+              width: 120,
+              height: 70,
+              colorBlendMode: BlendMode.srcOver,
+              color: Colors.brown.shade50.withOpacity(0.2),
+            ),
+          ),
+        ],
       ),
     );
   }
-  Color? background(int number){
-    switch(number){
+
+  Color? background(int number) {
+    switch (number) {
       case 0:
-        return  Colors.red;
+        return Colors.red;
       case 1:
-        return  Colors.yellow;
+        return Colors.yellow;
       case 2:
-        return  Colors.green;
+        return Colors.green;
       case 3:
-        return  Colors.red;
+        return Colors.red;
       case 4:
-        return  Colors.orange;
+        return Colors.orange;
       case 5:
-        return  Colors.blue;
+        return Colors.blue;
     }
   }
 }
 
 class Event extends ConsumerWidget {
-  Widget build(BuildContext context,WidgetRef ref){
+  Widget build(BuildContext context, WidgetRef ref) {
     return Align(
       alignment: Alignment.center,
-      child:Container(
+      child: Container(
         height: 350,
-        child:SfCalendar(
+        child: SfCalendar(
           todayHighlightColor: Colors.black54,
           cellBorderColor: Colors.black38,
           backgroundColor: Colors.brown.shade50,
           view: CalendarView.month,
           dataSource: _dataSource,
-          monthViewSettings: const MonthViewSettings(showAgenda: true,),
+          monthViewSettings: const MonthViewSettings(
+            showAgenda: true,
+          ),
           scheduleViewSettings: const ScheduleViewSettings(),
           onTap: calendarTapped,
           allowedViews: const [
@@ -297,47 +304,47 @@ class Event extends ConsumerWidget {
 }
 
 void calendarTapped(CalendarTapDetails calendarTapDetails) {
-  tapDay=calendarTapDetails.date!;
-  startDay=calendarTapDetails.date!.day;
+  tapDay = calendarTapDetails.date!;
+  startDay = calendarTapDetails.date!.day;
 }
 
-Future<void> addEvent() async{
+Future<void> addEvent() async {
   event = Appointment(
       startTime: startValue!,
       endTime: endValue!,
       subject: appointment!,
       color: Colors.black54);
 
-
-  allEventList=[EventModel(
-    startTime: startValue!.toString(),
-    endTime: endValue!.toString(),
-    subject: appointment!,
-  )];
+  allEventList = [
+    EventModel(
+      startTime: startValue!.toString(),
+      endTime: endValue!.toString(),
+      subject: appointment!,
+    )
+  ];
   await setAllEvent();
 
   _dataSource!.appointments!.add(event);
-  _dataSource!.notifyListeners(
-      CalendarDataSourceAction.add, <Appointment>[event!]);
-  appointment=null;
+  _dataSource!
+      .notifyListeners(CalendarDataSourceAction.add, <Appointment>[event!]);
+  appointment = null;
 }
 
-Future<void> addStorageEvent()async {
-    getAllEvent();
-    startValue = DateTime.parse(allEventList[0].startTime);
-    endValue = DateTime.parse(allEventList[0].endTime);
-    appointment = allEventList[0].subject;
-    event = Appointment(
-        startTime: startValue!,
-        endTime: endValue!,
-        subject: appointment!,
-        color: Colors.black54);
-    _dataSource!.appointments!.add(event);
-    _dataSource!.notifyListeners(
-        CalendarDataSourceAction.add, <Appointment>[event!]);
-    //appointment=null;
+Future<void> addStorageEvent() async {
+  getAllEvent();
+  startValue = DateTime.parse(allEventList[0].startTime);
+  endValue = DateTime.parse(allEventList[0].endTime);
+  appointment = allEventList[0].subject;
+  event = Appointment(
+      startTime: startValue!,
+      endTime: endValue!,
+      subject: appointment!,
+      color: Colors.black54);
+  _dataSource!.appointments!.add(event);
+  _dataSource!
+      .notifyListeners(CalendarDataSourceAction.add, <Appointment>[event!]);
+  //appointment=null;
 }
-
 
 _DataSource _getDataSource() {
   List<Appointment> appointments = <Appointment>[];
@@ -364,5 +371,3 @@ class _DataSource extends CalendarDataSource {
     appointments = source;
   }
 }
-
-
