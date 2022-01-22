@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:calender/apps/random.dart';
 import 'package:calender/data/storage.dart';
+import 'package:calender/page/sns.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:calender/apps/count.dart';
@@ -93,6 +94,18 @@ class HomePage extends ConsumerWidget {
               Navigator.pushNamed(context, ToDoPage.route);
               getDate();
             },
+          ),
+          leading: CupertinoButton(
+            padding: EdgeInsets.fromLTRB(0, 6, 10, 5),
+            onPressed: () {
+              Navigator.pushNamed(context, SnsPage.route);
+              ref.read(countProvider.state).state += 1;
+            },
+            child: Icon(
+              CupertinoIcons.back,
+              color: Colors.black,
+              size: 30,
+            ),
           ),
         ),
         child: Stack(

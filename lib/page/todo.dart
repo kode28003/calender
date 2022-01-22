@@ -1,5 +1,7 @@
 import 'package:calender/apps/count.dart';
 import 'package:calender/data/storage.dart';
+import 'package:calender/page/home.dart';
+import 'package:calender/page/sns.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +17,7 @@ final activeFilterKey = UniqueKey();
 final completedFilterKey = UniqueKey();
 final allFilterKey = UniqueKey();
 
-final list=[
+final list = [
   '',
   '古着で全身コーデ',
   '100円寄付する',
@@ -34,7 +36,7 @@ final list=[
   '',
 ];
 
-final company=[
+final company = [
   '',
   'アップル',
   'グーグル',
@@ -44,7 +46,7 @@ final company=[
   'トヨタ自動車',
 ];
 
-final companyInformation=[
+final companyInformation = [
   '',
   '　2019年、Appleでは1,100万台以上のiPhoneがリサイクルされました。',
   '　米国では、Googleマップで自動車でのルートを検索すると、燃料効率のいいルートを提案されます。',
@@ -53,7 +55,6 @@ final companyInformation=[
   '　女性が活躍し働きやすい環境づくりとして、ヤクルトレディのお子さんをお預かりする保育所を運営しています。',
   '　電気自動車をより早く普及させるため、車両電動化技術の特許を無償で共有しています。',
 ];
-
 
 final iconCount1Provider = StateProvider((ref) {
   return 1;
@@ -67,15 +68,14 @@ final iconCount3Provider = StateProvider((ref) {
   return 3;
 });
 
-final updateCompanyProvider=StateProvider((ref){
+final updateCompanyProvider = StateProvider((ref) {
   return 1;
 });
 
-
 final todoListProvider = StateNotifierProvider<TodoList, List<Todo>>((ref) {
-  final iconNumber1=ref.watch(iconCount1Provider);
-  final iconNumber2=ref.watch(iconCount2Provider);
-  final iconNumber3=ref.watch(iconCount3Provider);
+  final iconNumber1 = ref.watch(iconCount1Provider);
+  final iconNumber2 = ref.watch(iconCount2Provider);
+  final iconNumber3 = ref.watch(iconCount3Provider);
 
   return TodoList([
     Todo(id: '1', description: list[iconNumber1]),
@@ -117,81 +117,90 @@ class ToDoPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final todos = ref.watch(filteredTodos);
     final newTodoController = useTextEditingController();
-    final companyNum=ref.watch(updateCompanyProvider);
+    final companyNum = ref.watch(updateCompanyProvider);
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: CupertinoPageScaffold(
         backgroundColor: Colors.brown.shade50,
-      navigationBar: new CupertinoNavigationBar(
-        backgroundColor: Colors.brown.shade50,
-       middle: const Text('SDGs To Do List'),
-       leading: CupertinoButton(
-         padding: EdgeInsets.fromLTRB(0, 6, 10, 5),
-          onPressed: (){
-            Navigator.pop(context);
-            ref.read(countProvider.state).state+=1;
-          },
+        navigationBar: new CupertinoNavigationBar(
+          backgroundColor: Colors.brown.shade50,
+          middle: const Text('SDGs To Do List'),
+          leading: CupertinoButton(
+            padding: EdgeInsets.fromLTRB(0, 6, 10, 5),
+            onPressed: () {
+              Navigator.pushNamed(context, HomePage.route);
+              ref.read(countProvider.state).state += 1;
+            },
             child: Icon(
-          CupertinoIcons.back,
-          color: Colors.black,
-          size:30,
+              CupertinoIcons.back,
+              color: Colors.black,
+              size: 30,
+            ),
+          ),
+          trailing: CupertinoButton(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+            child: Icon(
+              CupertinoIcons.forward,
+              color: Colors.black,
+              size: 30,
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, SnsPage.route);
+            },
+          ),
         ),
-        ),
-      ),
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 18),
           children: [
             Container(
               foregroundDecoration: BoxDecoration(
-               borderRadius: BorderRadius.circular(8.0),
+                borderRadius: BorderRadius.circular(8.0),
               ),
-                padding: EdgeInsets.fromLTRB(10, 0, 5, 0),
-                child: RichText(
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  text: TextSpan(
-                    text: '企業の取り組み：「${company[companyNum]}」',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                      decoration: TextDecoration.underline,
-                      decorationThickness: 3,
-                    ),
+              padding: EdgeInsets.fromLTRB(10, 0, 5, 0),
+              child: RichText(
+                softWrap: true,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                text: TextSpan(
+                  text: '企業の取り組み：「${company[companyNum]}」',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black,
+                    decoration: TextDecoration.underline,
+                    decorationThickness: 3,
                   ),
                 ),
               ),
-              Container(
-                padding: EdgeInsets.fromLTRB(8, 5, 5, 7),
-                child: RichText(
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 3,
-                  text: TextSpan(
-                    text: companyInformation[companyNum],
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black87,
-                      decorationThickness: 3,
-                    ),
-                  ),
-                ),
-              ),
-            new Divider(
-                color: Colors.black
             ),
+            Container(
+              padding: EdgeInsets.fromLTRB(8, 5, 5, 7),
+              child: RichText(
+                softWrap: true,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+                text: TextSpan(
+                  text: companyInformation[companyNum],
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black87,
+                    decorationThickness: 3,
+                  ),
+                ),
+              ),
+            ),
+            new Divider(color: Colors.black),
             const Title(),
             CupertinoTextField(
               decoration: BoxDecoration(
-               borderRadius: BorderRadius.circular(8.0),
+                borderRadius: BorderRadius.circular(8.0),
                 color: Colors.white,
-                ),
+              ),
               key: addTodoKey,
               placeholder: 'SDGsの取り組みを入力してね',
               controller: newTodoController,
-              onSubmitted: (value){
-                if(value!='') {
+              onSubmitted: (value) {
+                if (value != '') {
                   ref.read(todoListProvider.notifier).add(value);
                   todoAddDate.add(value);
                   setDate();
@@ -208,7 +217,7 @@ class ToDoPage extends HookConsumerWidget {
                 key: ValueKey(todos[i].id),
                 onDismissed: (_) {
                   ref.read(todoListProvider.notifier).remove(todos[i]);
-                  todoAddDate.removeAt(i-3);
+                  todoAddDate.removeAt(i - 3);
                   setDate();
                   getDate();
                 },
@@ -237,6 +246,7 @@ class Toolbar extends HookConsumerWidget {
     Color? textColorFor(TodoListFilter value) {
       return filter == value ? Colors.black : Colors.brown.shade200;
     }
+
     return Material(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -259,7 +269,7 @@ class Toolbar extends HookConsumerWidget {
                   textColorFor(TodoListFilter.active),
                 ),
               ),
-            child: const Text('Active'),
+              child: const Text('Active'),
             ),
           ),
           Tooltip(
@@ -282,24 +292,26 @@ class Toolbar extends HookConsumerWidget {
             message: 'All todos',
             child: TextButton(
               onPressed: () =>
-              ref.read(todoListFilter.notifier).state = TodoListFilter.all,
+                  ref.read(todoListFilter.notifier).state = TodoListFilter.all,
               style: ButtonStyle(
                 visualDensity: VisualDensity.compact,
                 foregroundColor:
-                MaterialStateProperty.all(textColorFor(TodoListFilter.all)),
+                    MaterialStateProperty.all(textColorFor(TodoListFilter.all)),
               ),
-            child: const Text('All'),
+              child: const Text('All'),
             ),
           ),
-          Container(//////////////////////////////////
+          Container(
+            //////////////////////////////////
             width: 42,
             padding: EdgeInsets.all(2),
-            child:FloatingActionButton(
+            child: FloatingActionButton(
               backgroundColor: Colors.brown.shade50,
               onPressed: () {
-                final company=ref.read(updateCompanyProvider.state).state+=1;
-                if(company==6){
-                  ref.read(updateCompanyProvider.state).state=1;
+                final company =
+                    ref.read(updateCompanyProvider.state).state += 1;
+                if (company == 6) {
+                  ref.read(updateCompanyProvider.state).state = 1;
                 }
               },
               child: const Icon(
@@ -317,19 +329,20 @@ class Toolbar extends HookConsumerWidget {
 
 class Title extends StatelessWidget {
   const Title({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding:  EdgeInsets.fromLTRB(10, 5, 10, 30),
-    child: const Text(
-      'Monthly To Do List',
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        color: Colors.black54,
-        fontSize: 28,
-        fontFamily: 'Helvetica Neue',
+      padding: EdgeInsets.fromLTRB(10, 5, 10, 30),
+      child: const Text(
+        'Monthly To Do List',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.black54,
+          fontSize: 28,
+          fontFamily: 'Helvetica Neue',
+        ),
       ),
-    ),
     );
   }
 }
@@ -364,43 +377,44 @@ class TodoItem extends HookConsumerWidget {
           }
         },
         child: SingleChildScrollView(
-        child: Container(
-        height: 50,
-        child: ListTile(
-          horizontalTitleGap:3,
-          onTap: () {
-            itemFocusNode.requestFocus();
-            textFieldFocusNode.requestFocus();
-          },
-          leading: Checkbox(
-            fillColor: MaterialStateProperty.all<Color>(Colors.black),
-            value: todo.completed,
-            onChanged: (value) =>
-                ref.read(todoListProvider.notifier).toggle(todo.id),
-          ),
-          title: isFocused ? TextField(
-            autofocus: true,
-            focusNode: textFieldFocusNode,
-            controller: textEditingController,
-          )
-              : Text(todo.description),
-          trailing: IconButton(
-            icon: Icon(
-              Icons.autorenew,
+          child: Container(
+            height: 50,
+            child: ListTile(
+              horizontalTitleGap: 3,
+              onTap: () {
+                itemFocusNode.requestFocus();
+                textFieldFocusNode.requestFocus();
+              },
+              leading: Checkbox(
+                fillColor: MaterialStateProperty.all<Color>(Colors.black),
+                value: todo.completed,
+                onChanged: (value) =>
+                    ref.read(todoListProvider.notifier).toggle(todo.id),
+              ),
+              title: isFocused
+                  ? TextField(
+                      autofocus: true,
+                      focusNode: textFieldFocusNode,
+                      controller: textEditingController,
+                    )
+                  : Text(todo.description),
+              trailing: IconButton(
+                icon: Icon(
+                  Icons.autorenew,
+                ),
+                iconSize: 20,
+                color: Colors.black54,
+                onPressed: () {
+                  ref.read(todoListProvider.notifier).counter(todo.id, ref);
+                  if (todo.id == '1' || todo.id == '2' || todo.id == '3') {
+                    for (int j = 0; j < todoAddDate.length; j++) {
+                      ref.read(todoListProvider.notifier).add(todoAddDate[j]);
+                    }
+                  }
+                },
+              ),
             ),
-            iconSize: 20,
-            color: Colors.black54,
-            onPressed: () {
-              ref.read(todoListProvider.notifier).counter(todo.id,ref);
-              if(todo.id=='1' || todo.id=='2' ||todo.id =='3'){
-              for(int j=0;j<todoAddDate.length;j++) {
-                ref.read(todoListProvider.notifier).add(todoAddDate[j]);
-              }
-              }
-            },
           ),
-        ),
-      ),
         ),
       ),
     );

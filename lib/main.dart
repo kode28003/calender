@@ -1,3 +1,4 @@
+import 'package:calender/page/sns.dart';
 import 'package:calender/page/todo.dart';
 import 'package:flutter/material.dart';
 import 'package:calender/page/home.dart';
@@ -39,6 +40,8 @@ class MyApp extends ConsumerWidget {
       return MaterialPageRoute(builder: (_) => const TopPage());
     case ToDoPage.route:
       return MaterialPageRoute(builder: (_) => const ToDoPage());
+    case SnsPage.route:
+      return MaterialPageRoute(builder: (_) => const SnsPage());
     }
     });
   }
