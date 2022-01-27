@@ -27,6 +27,7 @@ class SnsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(messageProvider);
     context1 = context;
     return Material(
       child: CupertinoPageScaffold(
