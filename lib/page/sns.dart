@@ -67,34 +67,33 @@ class SnsPage extends ConsumerWidget {
                   padding: const EdgeInsets.only(
                       top: 10.0, right: 5.0, bottom: 50.0, left: 5.0),
                   children: [
+
                     for (int index = 0;
-                        index < ChatMessageModel.dummyData.length;
+                        index < MessageCase.messageList.length;
                         index++)
                       Card(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(9)
-                        ),
-                        margin: ChatMessageModel.dummyData[index].isMine
+                            borderRadius: BorderRadius.circular(9)),
+                        margin: MessageCase.messageList[index].name == myName
                             ? EdgeInsets.only(
                                 top: 5.0, left: 90.0, bottom: 5.0, right: 8.0)
                             : EdgeInsets.only(
                                 top: 5.0, left: 8.0, bottom: 5.0, right: 90.0),
                         child: ListTile(
-                          title:
-                              Text(ChatMessageModel.dummyData[index].message),
+                          title: Text(MessageCase.messageList[index].message),
                           subtitle: Row(
                               mainAxisAlignment:
-                                  ChatMessageModel.dummyData[index].isMine
+                                  MessageCase.messageList[index].name == myName
                                       ? MainAxisAlignment.end
                                       : MainAxisAlignment.start,
                               children: <Widget>[
                                 CircleAvatar(
-                                  backgroundImage: NetworkImage(ChatMessageModel
-                                      .dummyData[index].avatarUrl),
+                                  // backgroundImage: NetworkImage(ChatMessageModel
+                                  //     .dummyData[index].avatarUrl),
                                   radius: 10.0,
                                 ),
-                                Text(ChatMessageModel.dummyData[index].name +
-                                    ChatMessageModel.dummyData[index].datetime),
+                                Text(MessageCase.messageList[index].name +
+                                    MessageCase.messageList[index].datetime),
                               ]),
                         ),
                       ),
@@ -114,9 +113,9 @@ class SnsPage extends ConsumerWidget {
                               children: [
                                 Flexible(
                                     child: TextFormField(
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
                                   controller: messageTextInputCtl,
                                   keyboardType: TextInputType.multiline,
                                   maxLines: 3,
@@ -146,11 +145,15 @@ class SnsPage extends ConsumerWidget {
                                         icon: Icon(Icons.send),
                                         color: Colors.white,
                                         onPressed: () {
-                                          if(messageTextInputCtl.value.isComposingRangeValid==true) {
-                                            addMessage(
+                                          if (messageTextInputCtl.value
+                                                  .isComposingRangeValid ==
+                                              true) {
+                                            // addMessage(
+                                            //     messageTextInputCtl.text);
+                                            addSetMessage(
                                                 messageTextInputCtl.text);
                                           }
-                                            FocusScope.of(context).unfocus();
+                                          FocusScope.of(context).unfocus();
                                           messageTextInputCtl.clear();
                                           Timer(
                                             Duration(milliseconds: 200),

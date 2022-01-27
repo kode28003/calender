@@ -4,26 +4,30 @@ import 'package:calender/page/sns.dart';
 import 'package:meta/meta.dart';
 import 'package:calender/apps/firestore.dart';
 
+String myName="kodai";
+
 @immutable
 class MessageCase {
   final String name;
   final String datetime;
   final String message;
-  final String id;
 
   MessageCase(
       {required this.name,
       required this.datetime,
-      required this.message,
-      required this.id});
+      required this.message});
 
   static final List<MessageCase> messageList = [
     //object化しなくて使える
     MessageCase(
-      name: "公式アカウント",
+      name: "公式",
       message: "皆さん、SDGsな取り組みを記入してください",
-      datetime: DateTime.now().toString(),
-      id: "00",
+      datetime: DateTime.now().month.toString()+"/"+DateTime.now().day.toString()+" / "+DateTime.now().hour.toString()+":"+DateTime.now().minute.toString(),
+    ),
+    MessageCase(
+      name: "kodai",
+      message: "全身古着コーデ",
+      datetime: DateTime.now().month.toString()+"/"+DateTime.now().day.toString()+" / "+DateTime.now().hour.toString()+":"+DateTime.now().minute.toString(),
     ),
   ];
 }
@@ -94,16 +98,14 @@ void addMessage(String message) {
   MessageFirestore.addLastList(ChatMessageModel.dummyData);
 }
 
-
-
-
-void addSetMessage(MessageCase messageCase){
+void addSetMessage(String message){
+  final now = DateTime.now();
   MessageCase.messageList.add(MessageCase(
-    name: messageCase.name,
-    datetime: messageCase.datetime,
-    message: messageCase.message,
-    id: messageCase.id,
+    name: myName,
+    datetime: (now.month.toString()+"/"+now.day.toString()+" / "+now.hour.toString()+":"+now.minute.toString()),
+    message: message,
   ));
+  MessageFirestore.addmessageListToBase(MessageCase.messageList);
 }
 
 void adding(Iterable<MessageCase> messageCase){
@@ -111,7 +113,6 @@ void adding(Iterable<MessageCase> messageCase){
     name: messageCase.toString(),
     datetime: messageCase.toString(),
     message: messageCase.toString(),
-    id: messageCase.toString(),
   ));
   print(MessageCase.messageList);
 }

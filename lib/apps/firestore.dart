@@ -21,7 +21,6 @@ final _messageProvider = Provider.autoDispose<Iterable<MessageCase>>((ref) {
             name: data['name'],
             datetime: data['datetime'],
             message: data['message'],
-            id: doc.id,
           );
         });
         //addSetMessage(message);
@@ -33,7 +32,7 @@ final _messageProvider = Provider.autoDispose<Iterable<MessageCase>>((ref) {
 
 final messageProvider = Provider.autoDispose<Iterable<MessageCase>>((ref) {
   final messageDate=ref.watch(_messageProvider);
-  adding(messageDate);
+  //adding(messageDate); //こいつが入ると自動的に空白のリストが入ってしまう
   return messageDate;
 }); // これをwatchしてListに入れる！
 
@@ -46,7 +45,6 @@ class MessageFirestore {
     final today = DateTime.now();
     final docRef = ref.doc();
     await docRef.set({
-      'id': docRef.id,
       'name': messageCase.name,
       'datetime': messageCase.datetime,
       'message': messageCase.message,
@@ -58,10 +56,19 @@ class MessageFirestore {
     final today = DateTime.now();
     final docRef = ref.doc();
     await docRef.set({
-      'id': docRef.id,
       'name': dummyList[dummyList.length-1].name,
       'datetime': dummyList[dummyList.length-1].datetime,
       'message': dummyList[dummyList.length-1].message,
+    }).then((_) => print('Message Added, ID : $docRef.id'));
+  }
+
+  static Future addmessageListToBase(List<MessageCase> messageList)async{
+    final today = DateTime.now();
+    final docRef = ref.doc();
+    await docRef.set({
+      'name': messageList[messageList.length-1].name,
+      'datetime': messageList[messageList.length-1].datetime,
+      'message': messageList[messageList.length-1].message,
     }).then((_) => print('Message Added, ID : $docRef.id'));
   }
 
