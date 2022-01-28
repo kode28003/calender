@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:calender/page/sns.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meta/meta.dart';
 import 'package:calender/apps/firestore.dart';
 
-String myName="kodai";
+String myName="kodai"; //TODO ニックネームでログイン機能を追加
+
 
 @immutable
 class MessageCase {
@@ -32,6 +36,38 @@ class MessageCase {
   ];
 }
 
+void addSetMessage(String message){//入力したデータをリストに追加
+  final now = DateTime.now();
+  MessageCase.messageList.add(MessageCase(
+    name: myName,
+    datetime: (now.month.toString()+"/"+now.day.toString()+" / "+now.hour.toString()+":"+now.minute.toString()),
+    message: message,
+  ));
+  MessageFirestore.addmessageListToBase(MessageCase.messageList);
+}
+
+//TODO Iterable型をMessageCase型で保存するにはどうするか
+void adding(List<MessageCase> messageCase){//データベースから取得してリストに追加
+  MessageCase.messageList.add(MessageCase(
+    name: messageCase.toString(),
+    datetime: messageCase.toString(),
+    message: messageCase.toString(),
+  ));
+  print(MessageCase.messageList);
+}
+
+
+
+final counterProvider = ChangeNotifierProvider((ref) => addListCounter());
+class addListCounter extends ChangeNotifier {
+  void addingChange(){
+    notifyListeners();
+    print("実行しました！！！！！！！");
+  }
+}
+
+
+//以下がテストコード
 class ChatMessageModel {
   final String avatarUrl;
   final String name;
@@ -41,10 +77,10 @@ class ChatMessageModel {
 
   ChatMessageModel(
       {required this.avatarUrl,
-      required this.name,
-      required this.datetime,
-      required this.message,
-      required this.isMine});
+        required this.name,
+        required this.datetime,
+        required this.message,
+        required this.isMine});
 
   static final List<ChatMessageModel> dummyData = [
     ChatMessageModel(
@@ -66,21 +102,7 @@ class ChatMessageModel {
       name: "モーフィアス",
       datetime: "20:34",
       message:
-          "青い錠剤を飲めば、この話はなかったことになりベッドで目覚め元の日常に戻る。赤い錠剤を飲めば、この不思議な世界の真実へ連れて行こう",
-      isMine: false,
-    ),
-    ChatMessageModel(
-      avatarUrl: "https://randomuser.me/api/portraits/men/49.jpg",
-      name: "自分",
-      datetime: "20:45",
-      message: "赤を飲むか。。。。",
-      isMine: true,
-    ),
-    ChatMessageModel(
-      avatarUrl: "https://randomuser.me/api/portraits/men/83.jpg",
-      name: "モーフィアス",
-      datetime: "20:46",
-      message: "忘れるな・・・。私が見せるのは真実だ。純粋な真実だ",
+      "青い錠剤を飲めば、この話はなかったことになりベッドで目覚め元の日常に戻る。赤い錠剤を飲めば、この不思議な世界の真実へ連れて行こう",
       isMine: false,
     ),
   ];
@@ -94,25 +116,7 @@ void addMessage(String message) {
     message: message,
     isMine: true,
   ));
- // MessageFirestore.testFirestore(); テストコード。このmessageが入力したメッセージ
+  // MessageFirestore.testFirestore(); テストコード。このmessageが入力したメッセージ
   MessageFirestore.addLastList(ChatMessageModel.dummyData);
 }
 
-void addSetMessage(String message){
-  final now = DateTime.now();
-  MessageCase.messageList.add(MessageCase(
-    name: myName,
-    datetime: (now.month.toString()+"/"+now.day.toString()+" / "+now.hour.toString()+":"+now.minute.toString()),
-    message: message,
-  ));
-  MessageFirestore.addmessageListToBase(MessageCase.messageList);
-}
-
-void adding(Iterable<MessageCase> messageCase){
-  MessageCase.messageList.add(MessageCase(
-    name: messageCase.toString(),
-    datetime: messageCase.toString(),
-    message: messageCase.toString(),
-  ));
-  print(MessageCase.messageList);
-}

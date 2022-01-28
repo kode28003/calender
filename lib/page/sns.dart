@@ -2,11 +2,14 @@ import 'package:calender/data/storage.dart';
 import 'package:calender/apps/firestore.dart';
 import 'package:calender/page/home.dart';
 import 'package:calender/page/todo.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:async';
 import 'package:calender/apps/message.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 ScrollController _scrollController = ScrollController();
 final messageTextInputCtl = TextEditingController();
@@ -27,7 +30,8 @@ class SnsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(messageProvider);
+    ref.watch(bikeRepositoryProvider);
+    //ref.watch(counterProvider);
     context1 = context;
     return Material(
       child: CupertinoPageScaffold(
@@ -67,7 +71,6 @@ class SnsPage extends ConsumerWidget {
                   padding: const EdgeInsets.only(
                       top: 10.0, right: 5.0, bottom: 50.0, left: 5.0),
                   children: [
-
                     for (int index = 0;
                         index < MessageCase.messageList.length;
                         index++)
@@ -99,10 +102,11 @@ class SnsPage extends ConsumerWidget {
                       ),
                   ],
                 )),
+            _buildMessage(context,ref),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                new Container(
+                 Container(
                     color: Colors.black54,
                     child: Column(children: [
                       Form(
@@ -148,10 +152,9 @@ class SnsPage extends ConsumerWidget {
                                           if (messageTextInputCtl.value
                                                   .isComposingRangeValid ==
                                               true) {
-                                            // addMessage(
-                                            //     messageTextInputCtl.text);
                                             addSetMessage(
                                                 messageTextInputCtl.text);
+                                            test();
                                           }
                                           FocusScope.of(context).unfocus();
                                           messageTextInputCtl.clear();
@@ -171,6 +174,35 @@ class SnsPage extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+  Widget _buildMessage(BuildContext context,WidgetRef ref){
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('SDGs_Calendar/v0/sns').snapshots(),
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
+        if(snapshot.hasError){
+          return Text('Error: ${snapshot.error}');
+        }else if(!snapshot.hasData){
+          print("よくわからんです");
+          return Container();
+        }else {
+          print("---- 検知してますよ ----");
+          // snapshot.data!.docs.map((data){
+          //   MessageCase.messageList.add(MessageCase(
+          //     name: data['name'],
+          //     datetime: data['datetime'],
+          //     message: data['message'],
+          //   ));
+          //   a=data.toString();
+          // }
+          //);
+          print(MessageCase.messageList[MessageCase.messageList.length-1]);
+          print("これみて！");
+          bikeRepository().fetchPositions();
+          //addListCounter().addingChange();
+          return Container();
+        }
+      }
     );
   }
 }
