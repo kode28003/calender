@@ -26,24 +26,31 @@ class MessageCase {
     MessageCase(
       name: "公式",
       message: "皆さん、SDGsな取り組みを記入してください",
-      datetime: DateTime.now().month.toString()+"/"+DateTime.now().day.toString()+" / "+DateTime.now().hour.toString()+":"+DateTime.now().minute.toString(),
+      datetime: DateTime.now().month.toString()+"/"+DateTime.now().day.toString()+DateTime.now().hour.toString()+":"+DateTime.now().minute.toString(),
     ),
     MessageCase(
       name: "kodai",
       message: "全身古着コーデ",
-      datetime: DateTime.now().month.toString()+"/"+DateTime.now().day.toString()+" / "+DateTime.now().hour.toString()+":"+DateTime.now().minute.toString(),
+      datetime: DateTime.now().month.toString()+"/"+DateTime.now().day.toString()+DateTime.now().hour.toString()+":"+DateTime.now().minute.toString(),
     ),
   ];
 }
 
 void addSetMessage(String message){//入力したデータをリストに追加
   final now = DateTime.now();
+  final minute=now.minute;
+  String displayMinute;
+  if(minute<10){
+    displayMinute="0"+minute.toString();
+  }else{
+    displayMinute=minute.toString();
+  }
   MessageCase.messageList.add(MessageCase(
     name: myName,
-    datetime: (now.month.toString()+"/"+now.day.toString()+" / "+now.hour.toString()+":"+now.minute.toString()),
+    datetime: (now.month.toString()+"/"+now.day.toString()+" / "+now.hour.toString()+":"+displayMinute),
     message: message,
   ));
-  MessageFirestore.addmessageListToBase(MessageCase.messageList);
+  MessageFirestore.addMessageListToBase(MessageCase.messageList);
 }
 
 //TODO Iterable型をMessageCase型で保存するにはどうするか
@@ -60,6 +67,7 @@ void adding(List<MessageCase> messageCase){//データベースから取得し�
 
 final counterProvider = ChangeNotifierProvider((ref) => addListCounter());
 class addListCounter extends ChangeNotifier {
+
   void addingChange(){
     notifyListeners();
     print("実行しました！！！！！！！");

@@ -31,12 +31,11 @@ class SnsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(bikeRepositoryProvider);
-    //ref.watch(counterProvider);
     context1 = context;
     return Material(
       child: CupertinoPageScaffold(
         backgroundColor: Colors.brown.shade50,
-        navigationBar: new CupertinoNavigationBar(
+        navigationBar: CupertinoNavigationBar(
           backgroundColor: Colors.brown.shade50,
           middle: const Text('SDGs SNS'),
           leading: CupertinoButton(
@@ -93,9 +92,9 @@ class SnsPage extends ConsumerWidget {
                                 CircleAvatar(
                                   // backgroundImage: NetworkImage(ChatMessageModel
                                   //     .dummyData[index].avatarUrl),
-                                  radius: 10.0,
+                                  radius: 7.0,
                                 ),
-                                Text(MessageCase.messageList[index].name +
+                                Text(" "+MessageCase.messageList[index].name +"   "+
                                     MessageCase.messageList[index].datetime),
                               ]),
                         ),
@@ -154,7 +153,6 @@ class SnsPage extends ConsumerWidget {
                                               true) {
                                             addSetMessage(
                                                 messageTextInputCtl.text);
-                                            test();
                                           }
                                           FocusScope.of(context).unfocus();
                                           messageTextInputCtl.clear();
@@ -178,6 +176,7 @@ class SnsPage extends ConsumerWidget {
   }
 
   Widget _buildMessage(BuildContext context, WidgetRef ref) {
+    //ref.watch(bikeRepositoryProvider);
     return StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('SDGs_Calendar/v0/sns')
@@ -190,16 +189,26 @@ class SnsPage extends ConsumerWidget {
             return Container();
           } else {
             print("---- 検知してますよ ----");
-            final a = snapshot.data!.docChanges;
-            print("とってきたデータは" + a.toString());
-            snapshot.data!.docChanges.map((change) {
+            MessageCase.messageList.clear();
+            MessageCase.messageList.add(MessageCase(
+              name: "公式",
+              message: "皆さん、SDGsな取り組みを記入してください",
+              datetime: DateTime.now().month.toString()+"/"+DateTime.now().day.toString()+" "+DateTime.now().hour.toString()+":"+DateTime.now().minute.toString(),
+            ));
+            MessageCase.messageList.add(MessageCase(
+            name: "kodai",
+            message: "全身古着コーデ",
+            datetime: DateTime.now().month.toString()+"/"+DateTime.now().day.toString()+" "+DateTime.now().hour.toString()+":"+DateTime.now().minute.toString(),
+            ));
+
+            snapshot.data!.docs.map((change) {
               final name;
               final datetime;
               final message;
 
-              name = change.doc['name'];
-              message = change.doc['message'];
-              datetime = change.doc['datetime'];
+              name = change['name'];
+              message = change['message'];
+              datetime = change['datetime'];
 
               print("++++++"+message.toString());
               MessageCase.messageList.add(MessageCase(
@@ -211,8 +220,7 @@ class SnsPage extends ConsumerWidget {
             print(MessageCase
                 .messageList[MessageCase.messageList.length - 1].message);
             print("これみて！");
-            receiveRepository().fetchPositions();
-            ///////addListCounter().addingChange();
+            receiveRepository().refresh();
             return Container();
           }
         });

@@ -40,11 +40,6 @@ final messageProvider = Provider.autoDispose<Iterable<MessageCase>>((ref) {
   return messageDate;
 }); // これをwatchしてListに入れる！
 */
-Future test()async {
-  final docRef = FirebaseFirestore.instance.doc('SDGs_Calendar/v0/sns');// DocumentReference
-  final docSnapshot = await docRef.get();
-  print("++++"+docSnapshot.toString());
-}
 
 class MessageFirestore {
   static final ref =
@@ -61,7 +56,7 @@ class MessageFirestore {
     return docRef.id;
   }
 
-  static Future addmessageListToBase(List<MessageCase> messageList)async{
+  static Future addMessageListToBase(List<MessageCase> messageList)async{
     final today = DateTime.now();
     final docRef = ref.doc();
     await docRef.set({
@@ -96,6 +91,13 @@ ChangeNotifierProvider((ref) => receiveRepository());
 
 class receiveRepository extends ChangeNotifier {
   //List<MessageCase>? messageCase;
+  Future<void> sleep()async{
+    await  Future.delayed(new Duration(milliseconds: 300));
+    notifyListeners();
+  }
+  void refresh(){
+    notifyListeners();
+  }
   void fetchPositions() async {
     // final QuerySnapshot snapshot =
     // await FirebaseFirestore.instance.collection('SDGs_Calendar/v0/sns').get();
@@ -123,14 +125,6 @@ class receiveRepository extends ChangeNotifier {
       // datetime: DateTime.now().month.toString()+"/"+DateTime.now().day.toString()+" / "+DateTime.now().hour.toString()+":"+DateTime.now().minute.toString(),
       // ));
 
-    //   return MessageCase.messageList.add(MessageCase(
-    //     name: data['name'].toString(),
-    //     datetime: data['message'].toString(),
-    //     message: data['datetime'].toString(),
-    //   ));
-    //   //return MessageCase(name:data['name'],message: data['message'], datetime: data['datetime']);
-    // }).toList();
-    //print(messageData);// 追加できるけど、nullばかり！
     notifyListeners();
   }
 }
