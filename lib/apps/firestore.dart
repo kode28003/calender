@@ -92,16 +92,16 @@ class MessageFirestore {
 }
 
 final bikeRepositoryProvider =
-ChangeNotifierProvider((ref) => bikeRepository());
+ChangeNotifierProvider((ref) => receiveRepository());
 
-class bikeRepository extends ChangeNotifier {
+class receiveRepository extends ChangeNotifier {
   //List<MessageCase>? messageCase;
   void fetchPositions() async {
-    final QuerySnapshot snapshot =
-    await FirebaseFirestore.instance.collection('SDGs_Calendar/v0/sns').get();
-    final List messageData =
-    snapshot.docs.map((DocumentSnapshot document) async{
-      Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    // final QuerySnapshot snapshot =
+    // await FirebaseFirestore.instance.collection('SDGs_Calendar/v0/sns').get();
+    // final List messageData =
+    // snapshot.docs.map((DocumentSnapshot document) async{
+    //   Map<String, dynamic> data = document.data() as Map<String, dynamic>;
       // if(MessageCase.messageList.length-1>2) {
       //   MessageCase.messageList.removeRange(
       //       2, MessageCase.messageList.length - 1);
@@ -109,28 +109,28 @@ class bikeRepository extends ChangeNotifier {
       // if(MessageCase.messageList.length-1==2){
       //   MessageCase.messageList.removeLast();
       // }
-      MessageCase.messageList.clear();
-      MessageCase.messageList.add(MessageCase(
-        name: "公式",
-        message: "皆さん、SDGsな取り組みを記入してください",
-        datetime: DateTime.now().month.toString()+"/"+DateTime.now().day.toString()+" / "+DateTime.now().hour.toString()+":"+DateTime.now().minute.toString(),
-      ));
-      MessageCase.messageList.add(MessageCase(
-      name: "kodai",
-      message: "全身古着コーデ",
-      datetime: DateTime.now().month.toString()+"/"+DateTime.now().day.toString()+" / "+DateTime.now().hour.toString()+":"+DateTime.now().minute.toString(),
-      ));
 
-      return MessageCase.messageList.add(MessageCase(
-        name: data['name'].toString(),
-        datetime: data['message'].toString(),
-        message: data['datetime'].toString(),
-      ));
-      //return MessageCase(name:data['name'],message: data['message'], datetime: data['datetime']);
-    }).toList();
-    //this.messageCase = messageCase;
-    print(messageData);// 追加できるけど、nullばかり！
 
+      //MessageCase.messageList.clear();
+      // MessageCase.messageList.add(MessageCase(
+      //   name: "公式",
+      //   message: "皆さん、SDGsな取り組みを記入してください",
+      //   datetime: DateTime.now().month.toString()+"/"+DateTime.now().day.toString()+" / "+DateTime.now().hour.toString()+":"+DateTime.now().minute.toString(),
+      // ));
+      // MessageCase.messageList.add(MessageCase(
+      // name: "kodai",
+      // message: "全身古着コーデ",
+      // datetime: DateTime.now().month.toString()+"/"+DateTime.now().day.toString()+" / "+DateTime.now().hour.toString()+":"+DateTime.now().minute.toString(),
+      // ));
+
+    //   return MessageCase.messageList.add(MessageCase(
+    //     name: data['name'].toString(),
+    //     datetime: data['message'].toString(),
+    //     message: data['datetime'].toString(),
+    //   ));
+    //   //return MessageCase(name:data['name'],message: data['message'], datetime: data['datetime']);
+    // }).toList();
+    //print(messageData);// 追加できるけど、nullばかり！
     notifyListeners();
   }
 }

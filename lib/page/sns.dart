@@ -102,11 +102,11 @@ class SnsPage extends ConsumerWidget {
                       ),
                   ],
                 )),
-            _buildMessage(context,ref),
+            _buildMessage(context, ref),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                 Container(
+                Container(
                     color: Colors.black54,
                     child: Column(children: [
                       Form(
@@ -176,33 +176,45 @@ class SnsPage extends ConsumerWidget {
       ),
     );
   }
-  Widget _buildMessage(BuildContext context,WidgetRef ref){
+
+  Widget _buildMessage(BuildContext context, WidgetRef ref) {
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('SDGs_Calendar/v0/sns').snapshots(),
-      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
-        if(snapshot.hasError){
-          return Text('Error: ${snapshot.error}');
-        }else if(!snapshot.hasData){
-          print("よくわからんです");
-          return Container();
-        }else {
-          print("---- 検知してますよ ----");
-          // snapshot.data!.docs.map((data){
-          //   MessageCase.messageList.add(MessageCase(
-          //     name: data['name'],
-          //     datetime: data['datetime'],
-          //     message: data['message'],
-          //   ));
-          //   a=data.toString();
-          // }
-          //);
-          print(MessageCase.messageList[MessageCase.messageList.length-1]);
-          print("これみて！");
-          bikeRepository().fetchPositions();
-          //addListCounter().addingChange();
-          return Container();
-        }
-      }
-    );
+        stream: FirebaseFirestore.instance
+            .collection('SDGs_Calendar/v0/sns')
+            .snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else if (!snapshot.hasData) {
+            print("よくわからんです");
+            return Container();
+          } else {
+            print("---- 検知してますよ ----");
+            final a = snapshot.data!.docChanges;
+            print("とってきたデータは" + a.toString());
+            snapshot.data!.docChanges.map((change) {
+              final name;
+              final datetime;
+              final message;
+
+              name = change.doc['name'];
+              message = change.doc['message'];
+              datetime = change.doc['datetime'];
+
+              print("++++++"+message.toString());
+              MessageCase.messageList.add(MessageCase(
+                name: name,
+                datetime: datetime,
+                message: message,
+              ));
+            }).toList();
+            print(MessageCase
+                .messageList[MessageCase.messageList.length - 1].message);
+            print("これみて！");
+            receiveRepository().fetchPositions();
+            ///////addListCounter().addingChange();
+            return Container();
+          }
+        });
   }
 }
