@@ -247,8 +247,13 @@ class SnsPage extends ConsumerWidget {
                                       title: Text("このテキストをどうしますか？"),
                                       children: [
                                         SimpleDialogOption(
-                                          onPressed: () =>
-                                              Navigator.pop(context),
+                                          onPressed: () async{
+                                            await FirebaseFirestore.instance
+                                                .collection('SDGs_Calendar/v0/sns')
+                                                .doc(document.id)
+                                                .delete();
+                                            Navigator.pop(context);
+                                          },
                                           child: Text("削除する"),
                                         ),
                                         SimpleDialogOption(
