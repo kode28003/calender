@@ -10,6 +10,7 @@ import 'dart:async';
 import 'package:calender/apps/message.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 ScrollController _scrollController = ScrollController();
 final messageTextInputCtl = TextEditingController();
@@ -29,7 +30,10 @@ class SnsPage extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(
+    BuildContext context,
+    WidgetRef ref,
+  ) {
     ref.watch(bikeRepositoryProvider);
     context1 = context;
     return Material(
@@ -63,44 +67,44 @@ class SnsPage extends ConsumerWidget {
         ),
         child: Stack(
           children: [
-            GestureDetector(
-                onTap: () => FocusScope.of(context).unfocus(),
-                child: ListView(
-                  controller: _scrollController,
-                  padding: const EdgeInsets.only(
-                      top: 10.0, right: 5.0, bottom: 50.0, left: 5.0),
-                  children: [
-                    for (int index = 0;
-                        index < MessageCase.messageList.length;
-                        index++)
-                      Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(9)),
-                        margin: MessageCase.messageList[index].name == myName
-                            ? EdgeInsets.only(
-                                top: 5.0, left: 90.0, bottom: 5.0, right: 8.0)
-                            : EdgeInsets.only(
-                                top: 5.0, left: 8.0, bottom: 5.0, right: 90.0),
-                        child: ListTile(
-                          title: Text(MessageCase.messageList[index].message),
-                          subtitle: Row(
-                              mainAxisAlignment:
-                                  MessageCase.messageList[index].name == myName
-                                      ? MainAxisAlignment.end
-                                      : MainAxisAlignment.start,
-                              children: <Widget>[
-                                CircleAvatar(
-                                  // backgroundImage: NetworkImage(ChatMessageModel
-                                  //     .dummyData[index].avatarUrl),
-                                  radius: 7.0,
-                                ),
-                                Text(" "+MessageCase.messageList[index].name +"   "+
-                                    MessageCase.messageList[index].datetime),
-                              ]),
-                        ),
-                      ),
-                  ],
-                )),
+            // GestureDetector(
+            //     onTap: () => FocusScope.of(context).unfocus(),
+            //     child: ListView(
+            //       controller: _scrollController,
+            //       padding: const EdgeInsets.only(
+            //           top: 10.0, right: 5.0, bottom: 50.0, left: 5.0),
+            //       children: [
+            //         for (int index = 0;
+            //             index < MessageCase.messageList.length;
+            //             index++)
+            //           Card(
+            //             shape: RoundedRectangleBorder(
+            //                 borderRadius: BorderRadius.circular(9)),
+            //             margin: MessageCase.messageList[index].name == myName
+            //                 ? EdgeInsets.only(
+            //                     top: 5.0, left: 90.0, bottom: 5.0, right: 8.0)
+            //                 : EdgeInsets.only(
+            //                     top: 5.0, left: 8.0, bottom: 5.0, right: 90.0),
+            //             child: ListTile(
+            //               title: Text(MessageCase.messageList[index].message),
+            //               subtitle: Row(
+            //                   mainAxisAlignment:
+            //                       MessageCase.messageList[index].name == myName
+            //                           ? MainAxisAlignment.end
+            //                           : MainAxisAlignment.start,
+            //                   children: <Widget>[
+            //                     CircleAvatar(
+            //                       // backgroundImage: NetworkImage(ChatMessageModel
+            //                       //     .dummyData[index].avatarUrl),
+            //                       radius: 7.0,
+            //                     ),
+            //                     Text(" "+MessageCase.messageList[index].name +"   "+
+            //                         MessageCase.messageList[index].datetime),
+            //                   ]),
+            //             ),
+            //           ),
+            //       ],
+            //     )),
             _buildMessage(context, ref),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -189,39 +193,82 @@ class SnsPage extends ConsumerWidget {
             return Container();
           } else {
             print("---- 検知してますよ ----");
-            MessageCase.messageList.clear();
-            MessageCase.messageList.add(MessageCase(
-              name: "公式",
-              message: "皆さん、SDGsな取り組みを記入してください",
-              datetime: DateTime.now().month.toString()+"/"+DateTime.now().day.toString()+" "+DateTime.now().hour.toString()+":"+DateTime.now().minute.toString(),
-            ));
-            MessageCase.messageList.add(MessageCase(
-            name: "kodai",
-            message: "全身古着コーデ",
-            datetime: DateTime.now().month.toString()+"/"+DateTime.now().day.toString()+" "+DateTime.now().hour.toString()+":"+DateTime.now().minute.toString(),
-            ));
+            // MessageCase.messageList.clear();
+            // MessageCase.messageList.add(MessageCase(
+            //   name: "公式",
+            //   message: "皆さん、SDGsな取り組みを記入してください",
+            //   datetime: DateTime.now().month.toString()+"/"+DateTime.now().day.toString()+" "+DateTime.now().hour.toString()+":"+DateTime.now().minute.toString(),
+            // ));
+            // MessageCase.messageList.add(MessageCase(
+            // name: "kodai",
+            // message: "全身古着コーデ",
+            // datetime: DateTime.now().month.toString()+"/"+DateTime.now().day.toString()+" "+DateTime.now().hour.toString()+":"+DateTime.now().minute.toString(),
+            // ));
 
-            snapshot.data!.docs.map((change) {
-              final name;
-              final datetime;
-              final message;
+            // snapshot.data!.docs.map((DocumentSnapshot document) {
+            //   final name;
+            //   final datetime;
+            //   final message;
+            //
+            //   name = document['name'];
+            //   message = document['message'];
+            //   datetime = document['datetime'];
+            //
+            //   print("++++++"+message.toString());
+            //   MessageCase.messageList.add(MessageCase(
+            //     name: name,
+            //     datetime: datetime,
+            //     message: message,
+            //   ));
+            // }).toList();
+            // print(MessageCase
+            //     .messageList[MessageCase.messageList.length - 1].message);
+            // print("これみて！");
+            // receiveRepository().refresh();
+            // return Container();
 
-              name = change['name'];
-              message = change['message'];
-              datetime = change['datetime'];
-
-              print("++++++"+message.toString());
-              MessageCase.messageList.add(MessageCase(
-                name: name,
-                datetime: datetime,
-                message: message,
-              ));
-            }).toList();
-            print(MessageCase
-                .messageList[MessageCase.messageList.length - 1].message);
-            print("これみて！");
-            receiveRepository().refresh();
-            return Container();
+            //いいね！！
+            return AnimationConfiguration.staggeredList(
+              position: 10,
+              duration: const Duration(milliseconds: 355),
+              child: SlideAnimation(
+                verticalOffset: 50.0,
+                child: FadeInAnimation(
+                  child: ListView(
+                    children:
+                        snapshot.data!.docs.map((DocumentSnapshot document) {
+                      return Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(9)),
+                        margin: document['name'] == myName
+                            ? EdgeInsets.only(
+                                top: 5.0, left: 90.0, bottom: 5.0, right: 8.0)
+                            : EdgeInsets.only(
+                                top: 5.0, left: 8.0, bottom: 5.0, right: 90.0),
+                        child: ListTile(
+                          title: Text(document['message']),
+                          subtitle: Row(
+                              mainAxisAlignment: document['name'] == myName
+                                  ? MainAxisAlignment.end
+                                  : MainAxisAlignment.start,
+                              children: [
+                                CircleAvatar(
+                                  // backgroundImage: NetworkImage(ChatMessageModel
+                                  //     .dummyData[index].avatarUrl),
+                                  radius: 7.0,
+                                ),
+                                Text(" " +
+                                    document['name'] +
+                                    "  " +
+                                    document['datetime']),
+                              ]),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+            );
           }
         });
   }
