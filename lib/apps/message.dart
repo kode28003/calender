@@ -47,7 +47,7 @@ void addSetMessage(String message){//入力したデータをリストに追加
   }
   MessageCase.messageList.add(MessageCase(
     name: myName,
-    datetime: (now.month.toString()+"/"+now.day.toString()+" / "+now.hour.toString()+":"+displayMinute),
+    datetime: (now.month.toString()+"/"+now.day.toString()+"/"+now.hour.toString()+":"+displayMinute),
     message: message,
   ));
   MessageFirestore.addMessageListToBase(MessageCase.messageList);
