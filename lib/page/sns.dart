@@ -230,38 +230,67 @@ class SnsPage extends ConsumerWidget {
             //いいね！！
             return AnimationConfiguration.staggeredList(
               position: 10,
-              duration: const Duration(milliseconds: 355),
+              duration: const Duration(milliseconds: 255),
               child: SlideAnimation(
                 verticalOffset: 50.0,
                 child: FadeInAnimation(
                   child: ListView(
                     children:
                         snapshot.data!.docs.map((DocumentSnapshot document) {
-                      return Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(9)),
-                        margin: document['name'] == myName
-                            ? EdgeInsets.only(
-                                top: 5.0, left: 90.0, bottom: 5.0, right: 8.0)
-                            : EdgeInsets.only(
-                                top: 5.0, left: 8.0, bottom: 5.0, right: 90.0),
-                        child: ListTile(
-                          title: Text(document['message']),
-                          subtitle: Row(
-                              mainAxisAlignment: document['name'] == myName
-                                  ? MainAxisAlignment.end
-                                  : MainAxisAlignment.start,
-                              children: [
-                                CircleAvatar(
-                                  // backgroundImage: NetworkImage(ChatMessageModel
-                                  //     .dummyData[index].avatarUrl),
-                                  radius: 7.0,
-                                ),
-                                Text(" " +
-                                    document['name'] +
-                                    "  " +
-                                    document['datetime']),
-                              ]),
+                      return GestureDetector(
+                        onLongPress: () async {
+                          document['name'] == myName
+                              ? showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return SimpleDialog(
+                                      title: Text("このテキストをどうしますか？"),
+                                      children: [
+                                        SimpleDialogOption(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: Text("削除する"),
+                                        ),
+                                        SimpleDialogOption(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: Text("戻る"),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                )
+                              : null;
+                        },
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(9)),
+                          margin: document['name'] == myName
+                              ? EdgeInsets.only(
+                                  top: 5.0, left: 90.0, bottom: 5.0, right: 8.0)
+                              : EdgeInsets.only(
+                                  top: 5.0,
+                                  left: 8.0,
+                                  bottom: 5.0,
+                                  right: 90.0),
+                          child: ListTile(
+                            title: Text(document['message']),
+                            subtitle: Row(
+                                mainAxisAlignment: document['name'] == myName
+                                    ? MainAxisAlignment.end
+                                    : MainAxisAlignment.start,
+                                children: [
+                                  CircleAvatar(
+                                    // backgroundImage: NetworkImage(ChatMessageModel
+                                    //     .dummyData[index].avatarUrl),
+                                    radius: 7.0,
+                                  ),
+                                  Text(" " +
+                                      document['name'] +
+                                      "  " +
+                                      document['datetime']),
+                                ]),
+                          ),
                         ),
                       );
                     }).toList(),
@@ -272,4 +301,11 @@ class SnsPage extends ConsumerWidget {
           }
         });
   }
+}
+
+Future<void> ak(DocumentSnapshot document) async {
+  FirebaseFirestore.instance
+      .collection('SDGs_Calendar/v0/sns')
+      .doc(document.id)
+      .delete();
 }
