@@ -31,9 +31,11 @@ class MyApp extends ConsumerWidget {
           primary: Colors.brown.shade300,
         )
       ),
-        home: const HomePage(),
+        home: const TopPage(),
     onGenerateRoute: (routeSettings) {
     switch (routeSettings.name) {
+    case TopPage.route:
+        return MaterialPageRoute(builder: (_) => const TopPage());
     case HomePage.route:
       return MaterialPageRoute(builder: (_) => const HomePage());
     case TopPage.route:

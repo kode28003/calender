@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meta/meta.dart';
 import 'package:calender/apps/firestore.dart';
 
-String myName="kodai"; //TODO ニックネームでログイン機能を追加
+String myName=""; //TODO ニックネームでログイン機能を追加
 
 
 @immutable

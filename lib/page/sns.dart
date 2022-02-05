@@ -18,7 +18,7 @@ BuildContext? context1;
 
 class SnsPage extends ConsumerWidget {
   const SnsPage({Key? key}) : super(key: key);
-  static const String route = '/sns';
+  static const String route = '/home/sns';
 
   void scrollToBottom() {
     _scrollController.animateTo(
@@ -67,44 +67,6 @@ class SnsPage extends ConsumerWidget {
         ),
         child: Stack(
           children: [
-            // GestureDetector(
-            //     onTap: () => FocusScope.of(context).unfocus(),
-            //     child: ListView(
-            //       controller: _scrollController,
-            //       padding: const EdgeInsets.only(
-            //           top: 10.0, right: 5.0, bottom: 50.0, left: 5.0),
-            //       children: [
-            //         for (int index = 0;
-            //             index < MessageCase.messageList.length;
-            //             index++)
-            //           Card(
-            //             shape: RoundedRectangleBorder(
-            //                 borderRadius: BorderRadius.circular(9)),
-            //             margin: MessageCase.messageList[index].name == myName
-            //                 ? EdgeInsets.only(
-            //                     top: 5.0, left: 90.0, bottom: 5.0, right: 8.0)
-            //                 : EdgeInsets.only(
-            //                     top: 5.0, left: 8.0, bottom: 5.0, right: 90.0),
-            //             child: ListTile(
-            //               title: Text(MessageCase.messageList[index].message),
-            //               subtitle: Row(
-            //                   mainAxisAlignment:
-            //                       MessageCase.messageList[index].name == myName
-            //                           ? MainAxisAlignment.end
-            //                           : MainAxisAlignment.start,
-            //                   children: <Widget>[
-            //                     CircleAvatar(
-            //                       // backgroundImage: NetworkImage(ChatMessageModel
-            //                       //     .dummyData[index].avatarUrl),
-            //                       radius: 7.0,
-            //                     ),
-            //                     Text(" "+MessageCase.messageList[index].name +"   "+
-            //                         MessageCase.messageList[index].datetime),
-            //                   ]),
-            //             ),
-            //           ),
-            //       ],
-            //     )),
             _buildMessage(context, ref),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -193,40 +155,6 @@ class SnsPage extends ConsumerWidget {
             return Container();
           } else {
             print("---- 検知してますよ ----");
-            // MessageCase.messageList.clear();
-            // MessageCase.messageList.add(MessageCase(
-            //   name: "公式",
-            //   message: "皆さん、SDGsな取り組みを記入してください",
-            //   datetime: DateTime.now().month.toString()+"/"+DateTime.now().day.toString()+" "+DateTime.now().hour.toString()+":"+DateTime.now().minute.toString(),
-            // ));
-            // MessageCase.messageList.add(MessageCase(
-            // name: "kodai",
-            // message: "全身古着コーデ",
-            // datetime: DateTime.now().month.toString()+"/"+DateTime.now().day.toString()+" "+DateTime.now().hour.toString()+":"+DateTime.now().minute.toString(),
-            // ));
-
-            // snapshot.data!.docs.map((DocumentSnapshot document) {
-            //   final name;
-            //   final datetime;
-            //   final message;
-            //
-            //   name = document['name'];
-            //   message = document['message'];
-            //   datetime = document['datetime'];
-            //
-            //   print("++++++"+message.toString());
-            //   MessageCase.messageList.add(MessageCase(
-            //     name: name,
-            //     datetime: datetime,
-            //     message: message,
-            //   ));
-            // }).toList();
-            // print(MessageCase
-            //     .messageList[MessageCase.messageList.length - 1].message);
-            // print("これみて！");
-            // receiveRepository().refresh();
-            // return Container();
-
             //いいね！！
             return AnimationConfiguration.staggeredList(
               position: 10,
@@ -247,9 +175,10 @@ class SnsPage extends ConsumerWidget {
                                       title: Text("このテキストをどうしますか？"),
                                       children: [
                                         SimpleDialogOption(
-                                          onPressed: () async{
+                                          onPressed: () async {
                                             await FirebaseFirestore.instance
-                                                .collection('SDGs_Calendar/v0/sns')
+                                                .collection(
+                                                    'SDGs_Calendar/v0/sns')
                                                 .doc(document.id)
                                                 .delete();
                                             Navigator.pop(context);

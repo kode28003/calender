@@ -15,6 +15,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:calender/data/storage.dart';
 import 'package:calender/apps/firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 CalendarDataSource? _dataSource;
 Appointment? app;
@@ -66,7 +67,7 @@ final num = [
 
 class HomePage extends ConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
-  static const String route = '/';
+  static const String route = '/home';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -348,12 +349,44 @@ Future<void> addStorageEvent() async {
 
 _DataSource _getDataSource() {
   List<Appointment> appointments = <Appointment>[];
+  final now=DateTime.now();
   appointments.add(Appointment(
-    startTime: DateTime.now(),
-    endTime: DateTime.now().add(const Duration(hours: 1)),
-    subject: '信州アプリコンテスト',
+    startTime: DateTime(now.year,2,11,now.hour,now.minute),
+    endTime: DateTime(now.year,2,11,now.hour,now.minute).add(const Duration(hours: 1)),
+    subject: 'SHISHI KOTSUKOTSU',
     color: Colors.black54,
   ));
+  appointments.add(Appointment(
+    startTime: DateTime(now.year,2,10,now.hour,now.minute),
+    endTime: DateTime(now.year,2,10,now.hour,now.minute).add(const Duration(hours: 1)),
+    subject: '世界豆の日',
+    color: Colors.black54,
+  ));
+  appointments.add(Appointment(
+    startTime: DateTime(now.year,2,21,now.hour,now.minute),
+    endTime: DateTime(now.year,2,21,now.hour,now.minute).add(const Duration(hours: 1)),
+    subject: '国際母語の日',
+    color: Colors.black54,
+  ));
+  appointments.add(Appointment(
+    startTime: DateTime(now.year,3,3,now.hour,now.minute),
+    endTime: DateTime(now.year,3,3,now.hour,now.minute).add(const Duration(hours: 1)),
+    subject: '世界野生生物の日',
+    color: Colors.black54,
+  ));
+  appointments.add(Appointment(
+    startTime: DateTime(now.year,3,8,now.hour,now.minute),
+    endTime: DateTime(now.year,3,8,now.hour,now.minute).add(const Duration(hours: 1)),
+    subject: '国際女性デー',
+    color: Colors.black54,
+  ));
+  appointments.add(Appointment(
+    startTime: DateTime(now.year,3,21,now.hour,now.minute),
+    endTime: DateTime(now.year,3,21,now.hour,now.minute).add(const Duration(hours: 1)),
+    subject: '国際人種差別撤廃デー',
+    color: Colors.black54,
+  ));
+
   return _DataSource(appointments);
 }
 

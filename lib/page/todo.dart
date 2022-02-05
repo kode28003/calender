@@ -111,7 +111,7 @@ final filteredTodos = Provider<List<Todo>>((ref) {
 
 class ToDoPage extends HookConsumerWidget {
   const ToDoPage({Key? key}) : super(key: key);
-  static const String route = '/todo';
+  static const String route = '/home/todo';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
