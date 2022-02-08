@@ -1,4 +1,5 @@
 import 'package:calender/apps/count.dart';
+import 'package:calender/apps/message.dart';
 import 'package:calender/data/storage.dart';
 import 'package:calender/page/home.dart';
 import 'package:calender/page/sns.dart';
@@ -125,7 +126,7 @@ class ToDoPage extends HookConsumerWidget {
         backgroundColor: Colors.brown.shade50,
         navigationBar: new CupertinoNavigationBar(
           backgroundColor: Colors.brown.shade50,
-          middle: const Text('SDGs To Do List'),
+          middle:Text(myName+' さんの SDGs To Do List'),
           leading: CupertinoButton(
             padding: EdgeInsets.fromLTRB(0, 6, 10, 5),
             onPressed: () {

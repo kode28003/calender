@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:calender/apps/message.dart';
 import 'package:calender/apps/random.dart';
 import 'package:calender/data/storage.dart';
 import 'package:calender/page/sns.dart';
@@ -81,7 +82,7 @@ class HomePage extends ConsumerWidget {
       backgroundColor: Colors.brown.shade50,
       navigationBar: new CupertinoNavigationBar(
         backgroundColor: Colors.brown.shade50,
-        middle: const Text('SDGs Calendar'),
+        middle: Text(myName+' さんの SDGs Calendar'),
         trailing: CupertinoButton(
           padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
           child: Icon(
@@ -351,8 +352,8 @@ _DataSource _getDataSource() {
   List<Appointment> appointments = <Appointment>[];
   final now=DateTime.now();
   appointments.add(Appointment(
-    startTime: DateTime(now.year,2,11,now.hour,now.minute),
-    endTime: DateTime(now.year,2,11,now.hour,now.minute).add(const Duration(hours: 1)),
+    startTime: DateTime(now.year,2,11,10,00),
+    endTime: DateTime(now.year,2,11,12,00).add(const Duration(hours: 1)),
     subject: 'SHISHI KOTSUKOTSU',
     color: Colors.black54,
   ));

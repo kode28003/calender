@@ -41,7 +41,7 @@ class SnsPage extends ConsumerWidget {
         backgroundColor: Colors.brown.shade50,
         navigationBar: CupertinoNavigationBar(
           backgroundColor: Colors.brown.shade50,
-          middle: const Text('SDGs SNS'),
+          middle: Text(myName+' さんの SDGs SNS'),
           leading: CupertinoButton(
             padding: EdgeInsets.fromLTRB(0, 6, 10, 5),
             child: Icon(

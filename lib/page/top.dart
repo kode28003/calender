@@ -25,6 +25,7 @@ class TopPage extends ConsumerWidget {
   Widget build(BuildContext context,WidgetRef ref){
     return Scaffold(
       body: Center(
+        child:SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.all(32),
           child: Column(
@@ -106,6 +107,7 @@ class TopPage extends ConsumerWidget {
             ],
           ),
         ),
+      ),
       ),
     );
   }
