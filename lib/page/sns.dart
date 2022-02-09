@@ -236,10 +236,3 @@ class SnsPage extends ConsumerWidget {
         });
   }
 }
-
-Future<void> ak(DocumentSnapshot document) async {
-  FirebaseFirestore.instance
-      .collection('SDGs_Calendar/v0/sns')
-      .doc(document.id)
-      .delete();
-}

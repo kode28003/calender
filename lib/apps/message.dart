@@ -28,11 +28,6 @@ class MessageCase {
       message: "皆さん、SDGsな取り組みを記入してください",
       datetime: DateTime.now().month.toString()+"/"+DateTime.now().day.toString()+DateTime.now().hour.toString()+":"+DateTime.now().minute.toString(),
     ),
-    MessageCase(
-      name: "kodai",
-      message: "全身古着コーデ",
-      datetime: DateTime.now().month.toString()+"/"+DateTime.now().day.toString()+DateTime.now().hour.toString()+":"+DateTime.now().minute.toString(),
-    ),
   ];
 }
 
@@ -51,16 +46,6 @@ void addSetMessage(String message){//入力したデータをリストに追加
     message: message,
   ));
   MessageFirestore.addMessageListToBase(MessageCase.messageList);
-}
-
-//TODO Iterable型をMessageCase型で保存するにはどうするか
-void adding(List<MessageCase> messageCase){//データベースから取得してリストに追加
-  MessageCase.messageList.add(MessageCase(
-    name: messageCase.toString(),
-    datetime: messageCase.toString(),
-    message: messageCase.toString(),
-  ));
-  print(MessageCase.messageList);
 }
 
 
