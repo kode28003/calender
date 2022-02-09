@@ -6,6 +6,10 @@ final countProvider=StateProvider((ref){
   return 0;
 });
 
+final loginProvider=StateProvider((ref){
+  return 0;
+});
+
 
 final countUpNotifierProvider=
     ChangeNotifierProvider((ref)=>CountUpNotifier());
